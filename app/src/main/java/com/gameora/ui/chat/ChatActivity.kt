@@ -14,6 +14,7 @@ import com.gameora.ui.common.BaseActivity
 import com.gameora.ui.common.Nav
 import com.gameora.ui.common.StateView
 import com.gameora.util.UiState
+import com.gameora.util.toast
 
 class ChatActivity : BaseActivity<ActivityChatBinding>(ActivityChatBinding::inflate) {
 
@@ -62,7 +63,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>(ActivityChatBinding::infl
         vm.messages.observe(this) { state ->
             if (state is UiState.Success) { adapter.submit(state.data); binding.messagesRecycler.scrollToPosition(state.data.size - 1) }
         }
-        vm.sent.observe(this) { if (it is UiState.Error) com.gameora.util.toast(this, it.message) }
+        vm.sent.observe(this) { if (it is UiState.Error) toast(it.message) }
 
         vm.load(cid)
     }
