@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Development config: cleartext is allowed so the app can talk to a backend on
+    any host while the real URL is still being wired.  For production, switch the
+    backend to HTTPS and replace <base-config> with a <domain-config> that permits
+    cleartext only for specific hosts (or remove it entirely to require HTTPS).
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
