@@ -18,7 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Server / Backend configuration
-        buildConfigField "String", "API_BASE_URL", "\"https://gameora-backend5-production.up.railway.app/v1/\""
+        buildConfigField "String", "API_BASE_URL", "\"https://gameora-backend5-production.up.railway.app/\""
         buildConfigField "String", "IMAGE_BASE_URL", "\"https://api.gameora.example.com/storage/\""
     }
 
