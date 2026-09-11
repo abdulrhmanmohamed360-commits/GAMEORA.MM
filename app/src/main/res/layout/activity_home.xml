@@ -33,27 +33,84 @@
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_l">
 
+                <!-- Offers Banner -->
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/search_card"
+                    android:id="@+id/offers_banner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="1dp"
+                    android:layout_marginBottom="@dimen/spacing_m"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/brand_primary"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp"
+                    app:rippleColor="@color/white">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_l">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="شاهد العروض الجديدة"
+                                android:textColor="@color/text_inverse"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="اكتشف أحدث الخصومات والعروض على Gameora"
+                                android:textColor="@color/text_inverse"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginStart="@dimen/spacing_m"
+                            android:contentDescription="@null"
+                            android:src="@android:drawable/ic_media_play"
+                            android:tint="@color/text_inverse" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Search -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/search_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:padding="@dimen/spacing_m">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_search"
-                            android:contentDescription="@null" />
+                            android:contentDescription="@null"
+                            android:src="@android:drawable/ic_menu_search" />
 
                         <EditText
                             android:id="@+id/search_input"
@@ -65,7 +122,9 @@
                             android:imeOptions="actionSearch"
                             android:inputType="text"
                             android:maxLines="1" />
+
                     </LinearLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -121,8 +180,8 @@
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
                         android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
                         android:text="@string/nav_sell" />
 
                     <Button
@@ -130,8 +189,8 @@
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
                         android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
                         android:text="@string/nav_wallet" />
 
                     <Button
@@ -139,8 +198,8 @@
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
                         android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
                         android:text="@string/nav_orders" />
 
                     <Button
@@ -148,8 +207,8 @@
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
                         android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
                         android:text="@string/nav_chat" />
 
                     <Button
@@ -157,8 +216,8 @@
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
                         android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
                         android:text="@string/nav_notifications" />
 
                     <Button
@@ -166,12 +225,16 @@
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
                         android:layout_columnWeight="1"
+                        android:layout_margin="4dp"
                         android:text="@string/nav_profile" />
+
                 </GridLayout>
+
             </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
 
     <include
@@ -179,4 +242,5 @@
         layout="@layout/layout_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </FrameLayout>
