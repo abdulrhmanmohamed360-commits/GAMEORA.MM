@@ -3,9 +3,9 @@ package com.gameora.data.repository
 import com.gameora.data.local.SessionManager
 import com.gameora.data.local.TokenStore
 import com.gameora.data.remote.api.ApiService
+import com.gameora.data.remote.dto.UserDto
 import com.gameora.domain.model.AuthSession
 import com.gameora.domain.model.User
-import com.gameora.util.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -25,8 +25,8 @@ class AuthRepository(
     /**
      * Firebase Email/Password login.
      *
-     * After Firebase authentication, the Gameora profile is synchronized
-     * with the backend using the Firebase UID.
+     * After Firebase authentication, the Gameora profile
+     * is synchronized with the backend.
      */
     suspend fun login(
         emailOrUsername: String,
@@ -51,13 +51,15 @@ class AuthRepository(
 
             val session = sessionResult.getOrThrow()
 
+            val fallbackUsername =
+                firebaseUser.email
+                    ?.substringBefore("@")
+                    ?.takeIf { it.isNotBlank() }
+                    ?: firebaseUser.uid
+
             val syncedUser = syncGameoraUser(
                 firebaseUser = firebaseUser,
-                username = session.user.username
-                    ?: firebaseUser.email
-                        ?.substringBefore("@")
-                        ?.takeIf { it.isNotBlank() }
-                    ?: firebaseUser.uid
+                username = fallbackUsername
             )
 
             Result.success(
@@ -69,8 +71,8 @@ class AuthRepository(
     }
 
     /**
-     * Creates a Firebase account using email/password,
-     * then creates/synchronizes the Gameora profile on the backend.
+     * Creates a Firebase account and then creates/synchronizes
+     * the Gameora profile on the backend.
      */
     suspend fun register(
         username: String,
@@ -116,7 +118,6 @@ class AuthRepository(
                     .awaitFirebaseTask()
             }
 
-            // Reload so Firebase contains the latest display name.
             firebaseUser
                 .reload()
                 .awaitFirebaseTask()
@@ -125,8 +126,7 @@ class AuthRepository(
                 firebaseAuth.currentUser ?: firebaseUser
 
             /*
-             * createSession() saves the Firebase ID token first.
-             * This is important because /users/sync requires authentication.
+             * Save the Firebase ID token before calling /users/sync.
              */
             val sessionResult = createSession(refreshedUser)
 
@@ -137,11 +137,7 @@ class AuthRepository(
             val session = sessionResult.getOrThrow()
 
             /*
-             * Now synchronize the Firebase account with Gameora backend.
-             *
-             * Backend creates:
-             * users/{Firebase UID}
-             * wallets/{Firebase UID}
+             * Create the Gameora profile using the Firebase UID.
              */
             val syncedUser = syncGameoraUser(
                 firebaseUser = refreshedUser,
@@ -157,8 +153,7 @@ class AuthRepository(
     }
 
     /**
-     * Synchronizes the authenticated Firebase account
-     * with the Gameora backend.
+     * Synchronizes the Firebase account with the Gameora backend.
      */
     private suspend fun syncGameoraUser(
         firebaseUser: FirebaseUser,
@@ -191,11 +186,32 @@ class AuthRepository(
             "avatarUrl" to avatarUrlValue
         )
 
-        val serverUser = api.syncUser(body)
+        val serverUserDto = api.syncUser(body)
+
+        val serverUser = serverUserDto.toDomainUser()
 
         sessionManager.onLoggedIn(serverUser)
 
         return serverUser
+    }
+
+    /**
+     * Converts the backend UserDto into the application's domain User.
+     */
+    private fun UserDto.toDomainUser(): User {
+        return User(
+            id = id,
+            username = username,
+            displayName = displayName,
+            email = email,
+            avatarUrl = avatarUrl,
+            rating = rating,
+            reviewsCount = reviewsCount,
+            verified = verified,
+            isSeller = isSeller,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
     }
 
     /**
@@ -218,10 +234,8 @@ class AuthRepository(
     }
 
     /**
-     * Returns the currently authenticated Firebase user.
-     *
-     * The Firebase account is also synchronized with the backend
-     * so the Gameora profile remains available.
+     * Returns the currently authenticated user and synchronizes
+     * the Gameora profile with the backend.
      */
     suspend fun fetchCurrentUser(): Result<User> {
         return try {
@@ -267,10 +281,7 @@ class AuthRepository(
     }
 
     /**
-     * Creates the application's AuthSession from the Firebase user.
-     *
-     * The Firebase ID token is saved locally so the Retrofit
-     * authentication interceptor can send it to the backend.
+     * Creates the application's AuthSession from Firebase.
      */
     private suspend fun createSession(
         firebaseUser: FirebaseUser
@@ -308,9 +319,6 @@ class AuthRepository(
 
     /**
      * Converts FirebaseUser into the existing Gameora User model.
-     *
-     * Backend profile information will replace these defaults
-     * after synchronization.
      */
     private fun FirebaseUser.toDomainUser(): User {
         val emailValue =
@@ -322,6 +330,7 @@ class AuthRepository(
             emailValue
                 ?.substringBefore("@")
                 ?.takeIf { it.isNotBlank() }
+                ?: uid
 
         return User(
             id = uid,
@@ -340,8 +349,7 @@ class AuthRepository(
     }
 
     /**
-     * Converts Firebase Task<T> into a suspending function
-     * without requiring kotlinx-coroutines-play-services.
+     * Converts Firebase Task<T> into a suspending function.
      */
     private suspend fun <T> com.google.android.gms.tasks.Task<T>.awaitFirebaseTask(): T =
         suspendCancellableCoroutine { continuation ->
