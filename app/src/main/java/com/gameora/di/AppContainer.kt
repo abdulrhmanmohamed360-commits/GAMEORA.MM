@@ -10,6 +10,7 @@ import com.gameora.data.repository.CategoryRepository
 import com.gameora.data.repository.ChatRepository
 import com.gameora.data.repository.GameRepository
 import com.gameora.data.repository.NotificationRepository
+import com.gameora.data.repository.OfferRepository
 import com.gameora.data.repository.OrderRepository
 import com.gameora.data.repository.ProductRepository
 import com.gameora.data.repository.ReviewRepository
@@ -28,15 +29,41 @@ class AppContainer(context: Context) {
 
     val apiService: ApiService = ApiClient.create(tokenStore)
 
-    val authRepository: AuthRepository = AuthRepository(apiService, tokenStore, sessionManager)
-    val userRepository: UserRepository = UserRepository(apiService)
-    val gameRepository: GameRepository = GameRepository(apiService)
-    val categoryRepository: CategoryRepository = CategoryRepository(apiService)
-    val productRepository: ProductRepository = ProductRepository(apiService)
-    val sellerRepository: SellerRepository = SellerRepository(apiService)
-    val reviewRepository: ReviewRepository = ReviewRepository(apiService)
-    val orderRepository: OrderRepository = OrderRepository(apiService)
-    val walletRepository: WalletRepository = WalletRepository(apiService)
-    val chatRepository: ChatRepository = ChatRepository(apiService)
-    val notificationRepository: NotificationRepository = NotificationRepository(apiService)
+    val authRepository: AuthRepository =
+        AuthRepository(apiService, tokenStore, sessionManager)
+
+    val userRepository: UserRepository =
+        UserRepository(apiService)
+
+    val gameRepository: GameRepository =
+        GameRepository(apiService)
+
+    val categoryRepository: CategoryRepository =
+        CategoryRepository(apiService)
+
+    val productRepository: ProductRepository =
+        ProductRepository(apiService)
+
+    val sellerRepository: SellerRepository =
+        SellerRepository(apiService)
+
+    val reviewRepository: ReviewRepository =
+        ReviewRepository(apiService)
+
+    val orderRepository: OrderRepository =
+        OrderRepository(apiService)
+
+    val walletRepository: WalletRepository =
+        WalletRepository(apiService)
+
+    val chatRepository: ChatRepository =
+        ChatRepository(apiService)
+
+    val notificationRepository: NotificationRepository =
+        NotificationRepository(apiService)
+
+    // ---------------------------------------------------------------- Offers
+
+    val offerRepository: OfferRepository =
+        OfferRepository(apiService)
 }
