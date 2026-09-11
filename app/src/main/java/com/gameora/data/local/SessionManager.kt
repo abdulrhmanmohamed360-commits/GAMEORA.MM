@@ -5,24 +5,42 @@ import androidx.lifecycle.MutableLiveData
 import com.gameora.domain.model.User
 
 /**
- * Lightweight in-memory session state. The [User] itself always originates from the
- * backend ([com.gameora.data.remote.api.ApiService.getCurrentUser]); this class only
- * caches it for the UI to react to login/logout.
+ * Holds the current authentication session state.
+ *
+ * isLoggedIn:
+ * null  = session is being restored
+ * true  = user is logged in
+ * false = user is logged out
  */
 class SessionManager {
 
-    private val _isLoggedIn = MutableLiveData(false)
-    val isLoggedIn: LiveData<Boolean> get() = _isLoggedIn
+    private val _isLoggedIn = MutableLiveData<Boolean?>(null)
+    val isLoggedIn: LiveData<Boolean?> get() = _isLoggedIn
 
     private val _currentUser = MutableLiveData<User?>(null)
     val currentUser: LiveData<User?> get() = _currentUser
 
+    /**
+     * Called after successful login or session restoration.
+     */
     fun onLoggedIn(user: User?) {
         _currentUser.postValue(user)
         _isLoggedIn.postValue(user != null)
     }
 
+    /**
+     * Called when the user explicitly logs out.
+     */
     fun onLoggedOut() {
+        _currentUser.postValue(null)
+        _isLoggedIn.postValue(false)
+    }
+
+    /**
+     * Marks the session restoration process as finished
+     * without an authenticated user.
+     */
+    fun onSessionRestoreFailed() {
         _currentUser.postValue(null)
         _isLoggedIn.postValue(false)
     }
