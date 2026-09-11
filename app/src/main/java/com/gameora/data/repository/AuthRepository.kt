@@ -5,6 +5,7 @@ import com.gameora.data.local.TokenStore
 import com.gameora.data.remote.api.ApiService
 import com.gameora.domain.model.AuthSession
 import com.gameora.domain.model.User
+import com.gameora.util.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -24,10 +25,8 @@ class AuthRepository(
     /**
      * Firebase Email/Password login.
      *
-     * Note:
-     * The current UI sends an email address, so Firebase authentication
-     * is currently email-based. Username login can be added later using
-     * the user profile database.
+     * After Firebase authentication, the Gameora profile is synchronized
+     * with the backend using the Firebase UID.
      */
     suspend fun login(
         emailOrUsername: String,
@@ -35,24 +34,43 @@ class AuthRepository(
     ): Result<AuthSession> {
         return try {
             val result = firebaseAuth
-                .signInWithEmailAndPassword(emailOrUsername.trim(), password)
+                .signInWithEmailAndPassword(
+                    emailOrUsername.trim(),
+                    password
+                )
                 .awaitFirebaseTask()
 
             val firebaseUser = result.user
                 ?: throw IllegalStateException("Firebase user is null")
 
-            createSession(firebaseUser)
+            val sessionResult = createSession(firebaseUser)
+
+            if (sessionResult.isFailure) {
+                return sessionResult
+            }
+
+            val session = sessionResult.getOrThrow()
+
+            val syncedUser = syncGameoraUser(
+                firebaseUser = firebaseUser,
+                username = session.user.username
+                    ?: firebaseUser.email
+                        ?.substringBefore("@")
+                        ?.takeIf { it.isNotBlank() }
+                    ?: firebaseUser.uid
+            )
+
+            Result.success(
+                session.copy(user = syncedUser)
+            )
         } catch (e: Throwable) {
             Result.failure(e)
         }
     }
 
     /**
-     * Creates a Firebase account using email/password.
-     *
-     * displayName is stored in Firebase Authentication.
-     * The unique username will be handled later by the user profile
-     * database/server layer.
+     * Creates a Firebase account using email/password,
+     * then creates/synchronizes the Gameora profile on the backend.
      */
     suspend fun register(
         username: String,
@@ -61,18 +79,34 @@ class AuthRepository(
         displayName: String?
     ): Result<AuthSession> {
         return try {
+            val cleanUsername = username.trim()
+            val cleanEmail = email.trim()
+
+            if (cleanUsername.isBlank()) {
+                throw IllegalArgumentException("Username is required")
+            }
+
+            if (cleanEmail.isBlank()) {
+                throw IllegalArgumentException("Email is required")
+            }
+
             val result = firebaseAuth
-                .createUserWithEmailAndPassword(email.trim(), password)
+                .createUserWithEmailAndPassword(
+                    cleanEmail,
+                    password
+                )
                 .awaitFirebaseTask()
 
             val firebaseUser = result.user
                 ?: throw IllegalStateException("Firebase user is null")
 
             val finalDisplayName =
-                displayName?.trim()?.takeIf { it.isNotEmpty() }
-                    ?: username.trim().takeIf { it.isNotEmpty() }
+                displayName
+                    ?.trim()
+                    ?.takeIf { it.isNotEmpty() }
+                    ?: cleanUsername
 
-            if (!finalDisplayName.isNullOrBlank()) {
+            if (finalDisplayName.isNotBlank()) {
                 val profileUpdate = UserProfileChangeRequest.Builder()
                     .setDisplayName(finalDisplayName)
                     .build()
@@ -82,16 +116,86 @@ class AuthRepository(
                     .awaitFirebaseTask()
             }
 
-            // Reload the Firebase user so the updated display name is available.
-            firebaseUser.reload().awaitFirebaseTask()
+            // Reload so Firebase contains the latest display name.
+            firebaseUser
+                .reload()
+                .awaitFirebaseTask()
 
-            val refreshedUser = firebaseAuth.currentUser
-                ?: firebaseUser
+            val refreshedUser =
+                firebaseAuth.currentUser ?: firebaseUser
 
-            createSession(refreshedUser)
+            /*
+             * createSession() saves the Firebase ID token first.
+             * This is important because /users/sync requires authentication.
+             */
+            val sessionResult = createSession(refreshedUser)
+
+            if (sessionResult.isFailure) {
+                return sessionResult
+            }
+
+            val session = sessionResult.getOrThrow()
+
+            /*
+             * Now synchronize the Firebase account with Gameora backend.
+             *
+             * Backend creates:
+             * users/{Firebase UID}
+             * wallets/{Firebase UID}
+             */
+            val syncedUser = syncGameoraUser(
+                firebaseUser = refreshedUser,
+                username = cleanUsername
+            )
+
+            Result.success(
+                session.copy(user = syncedUser)
+            )
         } catch (e: Throwable) {
             Result.failure(e)
         }
+    }
+
+    /**
+     * Synchronizes the authenticated Firebase account
+     * with the Gameora backend.
+     */
+    private suspend fun syncGameoraUser(
+        firebaseUser: FirebaseUser,
+        username: String
+    ): User {
+
+        val emailValue =
+            firebaseUser.email
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+                ?: throw IllegalStateException(
+                    "Firebase user email is missing"
+                )
+
+        val displayNameValue =
+            firebaseUser.displayName
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+                ?: username
+
+        val avatarUrlValue =
+            firebaseUser.photoUrl
+                ?.toString()
+                ?.takeIf { it.isNotBlank() }
+
+        val body = mapOf(
+            "username" to username.trim(),
+            "email" to emailValue,
+            "displayName" to displayNameValue,
+            "avatarUrl" to avatarUrlValue
+        )
+
+        val serverUser = api.syncUser(body)
+
+        sessionManager.onLoggedIn(serverUser)
+
+        return serverUser
     }
 
     /**
@@ -106,7 +210,6 @@ class AuthRepository(
 
             Result.success(Unit)
         } catch (e: Throwable) {
-            // Local credentials must still be removed if anything unexpected happens.
             tokenStore.clear()
             sessionManager.onLoggedOut()
 
@@ -117,22 +220,38 @@ class AuthRepository(
     /**
      * Returns the currently authenticated Firebase user.
      *
-     * This replaces the old server-only getCurrentUser flow for the
-     * authentication phase.
+     * The Firebase account is also synchronized with the backend
+     * so the Gameora profile remains available.
      */
     suspend fun fetchCurrentUser(): Result<User> {
         return try {
             val firebaseUser = firebaseAuth.currentUser
-                ?: throw IllegalStateException("No authenticated Firebase user")
+                ?: throw IllegalStateException(
+                    "No authenticated Firebase user"
+                )
 
-            firebaseUser.reload().awaitFirebaseTask()
+            firebaseUser
+                .reload()
+                .awaitFirebaseTask()
 
-            val currentUser = firebaseAuth.currentUser
-                ?: firebaseUser
+            val currentUser =
+                firebaseAuth.currentUser ?: firebaseUser
 
-            val user = currentUser.toDomainUser()
+            val emailValue =
+                currentUser.email
+                    ?.trim()
+                    ?.takeIf { it.isNotEmpty() }
 
-            sessionManager.onLoggedIn(user)
+            val generatedUsername =
+                emailValue
+                    ?.substringBefore("@")
+                    ?.takeIf { it.isNotBlank() }
+                    ?: currentUser.uid
+
+            val user = syncGameoraUser(
+                firebaseUser = currentUser,
+                username = generatedUsername
+            )
 
             Result.success(user)
         } catch (e: Throwable) {
@@ -141,10 +260,7 @@ class AuthRepository(
     }
 
     /**
-     * Firebase Authentication keeps the refresh token internally.
-     *
-     * We store the current ID token in TokenStore as the access token
-     * so the existing networking layer can use the same storage mechanism.
+     * Checks whether a Firebase account is currently authenticated.
      */
     fun isLoggedIn(): Boolean {
         return firebaseAuth.currentUser != null
@@ -152,6 +268,9 @@ class AuthRepository(
 
     /**
      * Creates the application's AuthSession from the Firebase user.
+     *
+     * The Firebase ID token is saved locally so the Retrofit
+     * authentication interceptor can send it to the backend.
      */
     private suspend fun createSession(
         firebaseUser: FirebaseUser
@@ -162,7 +281,9 @@ class AuthRepository(
                 .awaitFirebaseTask()
 
             val idToken = tokenResult.token
-                ?: throw IllegalStateException("Firebase ID token is null")
+                ?: throw IllegalStateException(
+                    "Firebase ID token is null"
+                )
 
             val user = firebaseUser.toDomainUser()
 
@@ -188,23 +309,25 @@ class AuthRepository(
     /**
      * Converts FirebaseUser into the existing Gameora User model.
      *
-     * Profile fields that Firebase Authentication does not provide
-     * are intentionally left at safe defaults for now.
-     *
-     * Later, Firestore/backend user profiles can supply:
-     * username, avatar, rating, reviewsCount, verified, isSeller, etc.
+     * Backend profile information will replace these defaults
+     * after synchronization.
      */
     private fun FirebaseUser.toDomainUser(): User {
-        val emailValue = email?.trim()?.takeIf { it.isNotEmpty() }
+        val emailValue =
+            email
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
 
-        val generatedUsername = emailValue
-            ?.substringBefore("@")
-            ?.takeIf { it.isNotBlank() }
+        val generatedUsername =
+            emailValue
+                ?.substringBefore("@")
+                ?.takeIf { it.isNotBlank() }
 
         return User(
             id = uid,
             username = generatedUsername,
-            displayName = displayName?.takeIf { it.isNotBlank() },
+            displayName = displayName
+                ?.takeIf { it.isNotBlank() },
             email = emailValue,
             avatarUrl = photoUrl?.toString(),
             rating = 0.0,
@@ -217,8 +340,8 @@ class AuthRepository(
     }
 
     /**
-     * Converts Firebase Task<T> into a suspending function without
-     * requiring kotlinx-coroutines-play-services.
+     * Converts Firebase Task<T> into a suspending function
+     * without requiring kotlinx-coroutines-play-services.
      */
     private suspend fun <T> com.google.android.gms.tasks.Task<T>.awaitFirebaseTask(): T =
         suspendCancellableCoroutine { continuation ->
@@ -240,9 +363,8 @@ class AuthRepository(
             }
 
             continuation.invokeOnCancellation {
-                // Firebase Task does not expose a universal cancellation API
-                // for every authentication operation, so there is nothing
-                // additional to cancel here.
+                // Firebase Task does not expose a universal
+                // cancellation API for every authentication operation.
             }
         }
 }
