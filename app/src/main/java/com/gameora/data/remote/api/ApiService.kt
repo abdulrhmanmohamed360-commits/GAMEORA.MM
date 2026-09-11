@@ -8,6 +8,8 @@ import com.gameora.data.remote.dto.LoginRequestDto
 import com.gameora.data.remote.dto.MessageCreateDto
 import com.gameora.data.remote.dto.MessageDto
 import com.gameora.data.remote.dto.NotificationDto
+import com.gameora.data.remote.dto.OfferDto
+import com.gameora.data.remote.dto.OffersResponseDto
 import com.gameora.data.remote.dto.OrderCreateDto
 import com.gameora.data.remote.dto.OrderDto
 import com.gameora.data.remote.dto.PaginatedDto
@@ -179,6 +181,17 @@ interface ApiService {
     suspend fun getWalletTransactions(
         @QueryMap filters: Map<String, String>
     ): PaginatedDto<TransactionDto>
+
+    // ----------------------------------------------------------------- Offers
+
+    /**
+     * Returns active offers from the Gameora backend.
+     *
+     * Backend:
+     * GET /offers
+     */
+    @GET("offers")
+    suspend fun getOffers(): OffersResponseDto
 
     // ----------------------------------------------------------------- Chat
 
