@@ -30,20 +30,23 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 /**
- * The complete server contract. Every piece of content the user sees flows through
- * one of these endpoints. The app contains no local catalogue, no fallback lists,
- * and no hard-coded products — if the server returns nothing, the UI shows Empty/Error.
+ * The complete server contract.
  *
- * Paths are relative to [com.gameora.config.ApiConfig.API_BASE_URL].
+ * All application data is loaded from the Gameora backend.
  */
 interface ApiService {
 
     // ----------------------------------------------------------------- Auth
+
     @POST("auth/register")
-    suspend fun register(@Body body: RegisterRequestDto): AuthResponseDto
+    suspend fun register(
+        @Body body: RegisterRequestDto
+    ): AuthResponseDto
 
     @POST("auth/login")
-    suspend fun login(@Body body: LoginRequestDto): AuthResponseDto
+    suspend fun login(
+        @Body body: LoginRequestDto
+    ): AuthResponseDto
 
     @POST("auth/logout")
     suspend fun logout()
@@ -52,29 +55,52 @@ interface ApiService {
     suspend fun getMe(): UserDto
 
     // ------------------------------------------------------------- Current user
+
     @GET("users/me")
     suspend fun getCurrentUser(): UserDto
 
+    /**
+     * Creates or synchronizes the Gameora profile
+     * for the currently authenticated Firebase user.
+     *
+     * The Firebase ID token is sent automatically by the API client.
+     */
+    @POST("users/sync")
+    suspend fun syncUser(
+        @Body body: Map<String, String?>
+    ): UserDto
+
     // ----------------------------------------------------------------- Games
+
     @GET("games")
     suspend fun getGames(): List<GameDto>
 
     @GET("games/{id}")
-    suspend fun getGame(@Path("id") id: String): GameDto
+    suspend fun getGame(
+        @Path("id") id: String
+    ): GameDto
 
     // ------------------------------------------------------------ Categories
+
     @GET("categories")
     suspend fun getCategories(): List<CategoryDto>
 
     @GET("categories/{id}")
-    suspend fun getCategory(@Path("id") id: String): CategoryDto
+    suspend fun getCategory(
+        @Path("id") id: String
+    ): CategoryDto
 
     // ------------------------------------------------------------- Products
+
     @GET("products")
-    suspend fun getProducts(@QueryMap filters: Map<String, String>): PaginatedDto<ProductDto>
+    suspend fun getProducts(
+        @QueryMap filters: Map<String, String>
+    ): PaginatedDto<ProductDto>
 
     @GET("products/{id}")
-    suspend fun getProduct(@Path("id") id: String): ProductDto
+    suspend fun getProduct(
+        @Path("id") id: String
+    ): ProductDto
 
     @GET("games/{gameId}/products")
     suspend fun getProductsByGame(
@@ -83,7 +109,9 @@ interface ApiService {
     ): PaginatedDto<ProductDto>
 
     @POST("products")
-    suspend fun createProduct(@Body body: ProductCreateDto): ProductDto
+    suspend fun createProduct(
+        @Body body: ProductCreateDto
+    ): ProductDto
 
     @PATCH("products/{id}")
     suspend fun updateProduct(
@@ -92,43 +120,68 @@ interface ApiService {
     ): ProductDto
 
     @DELETE("products/{id}")
-    suspend fun deleteProduct(@Path("id") id: String)
+    suspend fun deleteProduct(
+        @Path("id") id: String
+    )
 
     // -------------------------------------------------------------- Sellers
+
     @GET("sellers/{id}")
-    suspend fun getSeller(@Path("id") id: String): SellerDto
+    suspend fun getSeller(
+        @Path("id") id: String
+    ): SellerDto
 
     // --------------------------------------------------------------- Reviews
+
     @GET("products/{id}/reviews")
-    suspend fun getProductReviews(@Path("id") id: String): List<ReviewDto>
+    suspend fun getProductReviews(
+        @Path("id") id: String
+    ): List<ReviewDto>
 
     @GET("sellers/{id}/reviews")
-    suspend fun getSellerReviews(@Path("id") id: String): List<ReviewDto>
+    suspend fun getSellerReviews(
+        @Path("id") id: String
+    ): List<ReviewDto>
 
     @POST("reviews")
-    suspend fun createReview(@Body body: ReviewCreateDto): ReviewDto
+    suspend fun createReview(
+        @Body body: ReviewCreateDto
+    ): ReviewDto
 
     // ---------------------------------------------------------------- Orders
+
     @GET("orders")
-    suspend fun getOrders(@QueryMap filters: Map<String, String>): PaginatedDto<OrderDto>
+    suspend fun getOrders(
+        @QueryMap filters: Map<String, String>
+    ): PaginatedDto<OrderDto>
 
     @GET("orders/{id}")
-    suspend fun getOrder(@Path("id") id: String): OrderDto
+    suspend fun getOrder(
+        @Path("id") id: String
+    ): OrderDto
 
     @POST("orders")
-    suspend fun createOrder(@Body body: OrderCreateDto): OrderDto
+    suspend fun createOrder(
+        @Body body: OrderCreateDto
+    ): OrderDto
 
     @POST("orders/{id}/cancel")
-    suspend fun cancelOrder(@Path("id") id: String): OrderDto
+    suspend fun cancelOrder(
+        @Path("id") id: String
+    ): OrderDto
 
     // ---------------------------------------------------------------- Wallet
+
     @GET("wallet")
     suspend fun getWallet(): WalletDto
 
     @GET("wallet/transactions")
-    suspend fun getWalletTransactions(@QueryMap filters: Map<String, String>): PaginatedDto<TransactionDto>
+    suspend fun getWalletTransactions(
+        @QueryMap filters: Map<String, String>
+    ): PaginatedDto<TransactionDto>
 
     // ----------------------------------------------------------------- Chat
+
     @GET("conversations")
     suspend fun getConversations(): List<ConversationDto>
 
@@ -145,6 +198,9 @@ interface ApiService {
     ): MessageDto
 
     // --------------------------------------------------------- Notifications
+
     @GET("notifications")
-    suspend fun getNotifications(@QueryMap filters: Map<String, String>): PaginatedDto<NotificationDto>
+    suspend fun getNotifications(
+        @QueryMap filters: Map<String, String>
+    ): PaginatedDto<NotificationDto>
 }
