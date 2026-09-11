@@ -38,5 +38,11 @@
         <activity android:name=".ui.chat.ConversationsActivity" android:exported="false" />
         <activity android:name=".ui.chat.ChatActivity" android:exported="false" />
         <activity android:name=".ui.notifications.NotificationsActivity" android:exported="false" />
+
+        <!-- Offers -->
+        <activity
+            android:name=".ui.offers.OffersActivity"
+            android:exported="false" />
+
     </application>
 </manifest>
