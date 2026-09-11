@@ -12,6 +12,7 @@ import com.gameora.util.UiState
  */
 class StateView(root: View, onRetry: () -> Unit) {
 
+    private val root = root
     private val progress = root.findViewById<View>(R.id.state_progress)
     private val error = root.findViewById<View>(R.id.state_error)
     private val empty = root.findViewById<View>(R.id.state_empty)
@@ -21,27 +22,52 @@ class StateView(root: View, onRetry: () -> Unit) {
 
     init {
         retry.setOnClickListener { onRetry() }
+        root.visibility = View.GONE
     }
 
     fun bind(state: UiState<*>) {
-        hideAll()
         when (state) {
-            is UiState.Loading -> progress.visibility = View.VISIBLE
+            is UiState.Loading -> showLoading()
+
             is UiState.Error -> {
-                errorText.text = state.message
-                error.visibility = View.VISIBLE
+                showError(state.message)
             }
-            is UiState.Empty -> empty.visibility = View.VISIBLE
-            is UiState.Success<*> -> { /* content visible */ }
+
+            is UiState.Empty -> {
+                showEmpty()
+            }
+
+            is UiState.Success<*> -> {
+                hide()
+            }
         }
     }
 
-    fun showLoading() { hideAll(); progress.visibility = View.VISIBLE }
-    fun showError(message: String) { hideAll(); errorText.text = message; error.visibility = View.VISIBLE }
-    fun showEmpty() { hideAll(); empty.visibility = View.VISIBLE }
-    fun hide() { hideAll() }
+    fun showLoading() {
+        root.visibility = View.VISIBLE
+        hideChildren()
+        progress.visibility = View.VISIBLE
+    }
 
-    private fun hideAll() {
+    fun showError(message: String) {
+        root.visibility = View.VISIBLE
+        hideChildren()
+        errorText.text = message
+        error.visibility = View.VISIBLE
+    }
+
+    fun showEmpty() {
+        root.visibility = View.VISIBLE
+        hideChildren()
+        empty.visibility = View.VISIBLE
+    }
+
+    fun hide() {
+        hideChildren()
+        root.visibility = View.GONE
+    }
+
+    private fun hideChildren() {
         progress.visibility = View.GONE
         error.visibility = View.GONE
         empty.visibility = View.GONE
