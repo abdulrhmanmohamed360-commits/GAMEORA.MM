@@ -7,19 +7,15 @@ class OfferRepository(
     private val apiService: ApiService
 ) {
 
-    suspend fun getOffers(): ApiResult<List<OfferDto>> {
-        return try {
+    suspend fun getOffers(): Result<List<OfferDto>> {
+        return safeApi {
             val response = apiService.getOffers()
 
             if (response.ok) {
-                ApiResult.Success(response.offers)
+                response.offers
             } else {
-                ApiResult.Error("فشل تحميل العروض")
+                throw IllegalStateException("فشل تحميل العروض")
             }
-        } catch (e: Exception) {
-            ApiResult.Error(
-                e.message ?: "حدث خطأ أثناء تحميل العروض"
-            )
         }
     }
 }
