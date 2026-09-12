@@ -34,7 +34,7 @@
                 android:padding="@dimen/spacing_l">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="+id/search_card"
+                    android:id="@+id/search_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
@@ -56,7 +56,7 @@
                             android:contentDescription="@null" />
 
                         <EditText
-                            android:id="+id/search_input"
+                            android:id="@+id/search_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_s"
@@ -76,7 +76,7 @@
                     android:textAppearance="@style/TextAppearance.Gameora.Title" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="+id/games_recycler"
+                    android:id="@+id/games_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
@@ -90,7 +90,7 @@
                     android:textAppearance="@style/TextAppearance.Gameora.Title" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="+id/categories_recycler"
+                    android:id="@+id/categories_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
@@ -104,7 +104,7 @@
                     android:textAppearance="@style/TextAppearance.Gameora.Title" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="+id/recent_recycler"
+                    android:id="@+id/recent_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false" />
@@ -117,7 +117,7 @@
                     android:rowCount="2">
 
                     <Button
-                        android:id="+id/nav_sell"
+                        android:id="@+id/nav_sell"
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                         android:text="@string/nav_sell" />
 
                     <Button
-                        android:id="+id/nav_wallet"
+                        android:id="@+id/nav_wallet"
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                         android:text="@string/nav_wallet" />
 
                     <Button
-                        android:id="+id/nav_orders"
+                        android:id="@+id/nav_orders"
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                         android:text="@string/nav_orders" />
 
                     <Button
-                        android:id="+id/nav_chat"
+                        android:id="@+id/nav_chat"
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                         android:text="@string/nav_chat" />
 
                     <Button
-                        android:id="+id/nav_notifications"
+                        android:id="@+id/nav_notifications"
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                         android:text="@string/nav_notifications" />
 
                     <Button
-                        android:id="+id/nav_profile"
+                        android:id="@+id/nav_profile"
                         style="@style/Widget.Gameora.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
     </LinearLayout>
 
     <include
-        android:id="+id/state_view"
+        android:id="@+id/state_view"
         layout="@layout/layout_state"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
