@@ -1,182 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--Open VIP can improve the speed of decompilation, resource code translate to name automatically and activate the smart editing and automatic completion function-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:background="@7F060023"
+    android:layout_width="-1"
+    android:layout_height="-1">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:orientation="1"
+        android:layout_width="-1"
+        android:layout_height="-1">
         <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/brand_primary">
-
+            android:background="@7F060023"
+            android:layout_width="-1"
+            android:layout_height="-2"
+            android:elevation="0dp">
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/text_inverse" />
+                android:id="@7F090261"
+                android:background="@7F060023"
+                android:layout_width="-1"
+                android:layout_height="?7F040005"
+                app:title="@7F110026"
+                app:titleTextColor="@7F060320" />
         </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-
+            android:paddingBottom="12dp"
+            android:clipToPadding="false"
+            android:layout_width="-1"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:layout_weight="1.0">
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_l">
-
+                android:orientation="1"
+                android:paddingBottom="24dp"
+                android:layout_width="-1"
+                android:layout_height="-2"
+                android:paddingStart="@7F07031F"
+                android:paddingEnd="@7F07031F">
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/search_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="1dp"
+                    android:id="@7F0901F0"
+                    android:focusable="true"
                     android:clickable="true"
-                    android:focusable="true">
-
+                    android:layout_width="-1"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="8dp"
+                    app:cardBackgroundColor="@7F060024"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@7F060070"
+                    app:strokeWidth="1dp">
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/spacing_m">
-
+                        android:gravity="0x00000010"
+                        android:orientation="0"
+                        android:layout_width="-1"
+                        android:layout_height="-1"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_search"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@0108004F"
+                            android:tint="@7F060028"
                             android:contentDescription="@null" />
-
                         <EditText
-                            android:id="@+id/search_input"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_s"
-                            android:background="@android:color/transparent"
-                            android:hint="@string/search_hint"
-                            android:imeOptions="actionSearch"
-                            android:inputType="text"
-                            android:maxLines="1" />
+                            android:textSize="15sp"
+                            android:textColor="@7F060320"
+                            android:textColorHint="@7F06031E"
+                            android:gravity="0x00000010"
+                            android:id="@7F0901F4"
+                            android:background="@0106000D"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:layout_width="0dp"
+                            android:layout_height="-1"
+                            android:hint="@7F110112"
+                            android:maxLines="1"
+                            android:layout_weight="1.0"
+                            android:inputType="0x00000001"
+                            android:layout_marginStart="12dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@7F090186"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_width="-1"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="20dp"
+                    app:cardBackgroundColor="@7F060024"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@7F060026"
+                    app:strokeWidth="1dp">
+                    <LinearLayout
+                        android:gravity="0x00000010"
+                        android:orientation="0"
+                        android:padding="22dp"
+                        android:layout_width="-1"
+                        android:layout_height="-1">
+                        <LinearLayout
+                            android:orientation="1"
+                            android:layout_width="0dp"
+                            android:layout_height="-2"
+                            android:layout_weight="1.0">
+                            <TextView
+                                android:textSize="21sp"
+                                android:textStyle="0x00000001"
+                                android:textColor="@7F060320"
+                                android:layout_width="-2"
+                                android:layout_height="-2"
+                                android:text="اكتشف عروض Gameora" />
+                            <TextView
+                                android:textSize="14sp"
+                                android:textColor="@7F060321"
+                                android:layout_width="-2"
+                                android:layout_height="-2"
+                                android:layout_marginTop="8dp"
+                                android:text="أفضل الفرص والعروض المميزة للألعاب" />
+                            <TextView
+                                android:textSize="14sp"
+                                android:textStyle="0x00000001"
+                                android:textColor="@7F060028"
+                                android:layout_width="-2"
+                                android:layout_height="-2"
+                                android:layout_marginTop="12dp"
+                                android:text="عرض العروض" />
+                        </LinearLayout>
+                        <ImageView
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:src="@01080024"
+                            android:tint="@7F060026"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_l"
-                    android:text="@string/section_games"
-                    android:textAppearance="@style/TextAppearance.Gameora.Title" />
-
+                    android:textSize="20sp"
+                    android:textStyle="0x00000001"
+                    android:textColor="@7F060320"
+                    android:layout_width="-2"
+                    android:layout_height="-2"
+                    android:layout_marginTop="26dp"
+                    android:text="@7F110118" />
+                <TextView
+                    android:textSize="13sp"
+                    android:textColor="@7F060321"
+                    android:layout_width="-2"
+                    android:layout_height="-2"
+                    android:layout_marginTop="4dp"
+                    android:text="اختر لعبتك للوصول إلى الخدمات المتاحة" />
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/games_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:orientation="0"
+                    android:id="@7F0900F7"
                     android:clipToPadding="false"
-                    android:orientation="horizontal" />
-
+                    android:layout_width="-1"
+                    android:layout_height="-2"
+                    android:layout_marginTop="14dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_l"
-                    android:text="@string/section_categories"
-                    android:textAppearance="@style/TextAppearance.Gameora.Title" />
-
+                    android:textSize="20sp"
+                    android:textStyle="0x00000001"
+                    android:textColor="@7F060320"
+                    android:layout_width="-2"
+                    android:layout_height="-2"
+                    android:layout_marginTop="26dp"
+                    android:text="@7F110117" />
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/categories_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:orientation="0"
+                    android:id="@7F090070"
                     android:clipToPadding="false"
-                    android:orientation="horizontal" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_l"
-                    android:text="@string/recent"
-                    android:textAppearance="@style/TextAppearance.Gameora.Title" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recent_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
-
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_l"
-                    android:columnCount="3"
-                    android:rowCount="2">
-
-                    <Button
-                        android:id="@+id/nav_sell"
-                        style="@style/Widget.Gameora.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_columnWeight="1"
-                        android:text="@string/nav_sell" />
-
-                    <Button
-                        android:id="@+id/nav_wallet"
-                        style="@style/Widget.Gameora.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_columnWeight="1"
-                        android:text="@string/nav_wallet" />
-
-                    <Button
-                        android:id="@+id/nav_orders"
-                        style="@style/Widget.Gameora.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_columnWeight="1"
-                        android:text="@string/nav_orders" />
-
-                    <Button
-                        android:id="@+id/nav_chat"
-                        style="@style/Widget.Gameora.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_columnWeight="1"
-                        android:text="@string/nav_chat" />
-
-                    <Button
-                        android:id="@+id/nav_notifications"
-                        style="@style/Widget.Gameora.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_columnWeight="1"
-                        android:text="@string/nav_notifications" />
-
-                    <Button
-                        android:id="@+id/nav_profile"
-                        style="@style/Widget.Gameora.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_columnWeight="1"
-                        android:text="@string/nav_profile" />
-                </GridLayout>
+                    android:layout_width="-1"
+                    android:layout_height="-2"
+                    android:layout_marginTop="14dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
-
-    <include
-        android:id="@+id/state_view"
-        layout="@layout/layout_state"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@7F090061"
+            android:layout_width="-1"
+            android:layout_height="74dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="@7F060024"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@7F060070"
+            app:strokeWidth="1dp">
+            <LinearLayout
+                android:gravity="0x00000011"
+                android:orientation="0"
+                android:layout_width="-1"
+                android:layout_height="-1"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp">
+                <LinearLayout
+                    android:gravity="0x00000011"
+                    android:orientation="1"
+                    android:id="@7F090164"
+                    android:focusable="true"
+                    android:clickable="true"...
+<!--Over the length of free decompile-->
