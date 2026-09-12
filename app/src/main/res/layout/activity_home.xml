@@ -13,32 +13,23 @@
 
         <!-- HEADER -->
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/bg_screen"
-            android:elevation="0dp">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/bg_screen"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/text_primary" />
-
-        </com.google.android.material.appbar.AppBarLayout>
+            app:title="@string/app_name"
+            app:titleTextColor="@color/text_primary" />
 
 
-        <!-- HOME CONTENT -->
+        <!-- CONTENT -->
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:fillViewport="true"
-            android:clipToPadding="false"
-            android:paddingBottom="12dp">
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,7 +46,7 @@
                     android:id="@+id/search_card"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:clickable="true"
                     android:focusable="true"
                     app:cardBackgroundColor="@color/bg_surface"
@@ -67,8 +58,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
                         android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp">
 
@@ -101,7 +92,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
 
-                <!-- FEATURED OFFERS -->
+                <!-- OFFERS -->
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/offers_banner"
@@ -119,9 +110,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingStart="22dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="20dp"
                         android:paddingEnd="18dp">
 
                         <LinearLayout
@@ -135,7 +126,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="عروض Gameora المميزة"
                                 android:textColor="@color/text_primary"
-                                android:textSize="22sp"
+                                android:textSize="21sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -158,11 +149,10 @@
 
                         </LinearLayout>
 
-
                         <FrameLayout
                             android:layout_width="54dp"
                             android:layout_height="54dp"
-                            android:layout_marginStart="10dp"
+                            android:layout_marginStart="8dp"
                             android:background="@drawable/bg_game_image">
 
                             <ImageView
@@ -180,7 +170,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
 
-                <!-- GAMES -->
+                <!-- GAMES TITLE -->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -199,42 +189,48 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
+
+                <!-- GAMES -->
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/games_recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="140dp"
                     android:layout_marginTop="14dp"
                     android:clipToPadding="false"
-                    android:orientation="horizontal"
                     android:paddingStart="2dp"
-                    android:paddingEnd="2dp" />
+                    android:paddingEnd="2dp"
+                    android:overScrollMode="never" />
 
 
-                <!-- CATEGORIES -->
+                <!-- CATEGORIES TITLE -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="26dp"
                     android:text="@string/section_categories"
                     android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+
+                <!-- CATEGORIES -->
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/categories_recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_marginTop="14dp"
                     android:clipToPadding="false"
-                    android:orientation="horizontal" />
+                    android:overScrollMode="never" />
 
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
 
-        <!-- MODERN BOTTOM NAVIGATION -->
+        <!-- BOTTOM NAVIGATION -->
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bottom_navigation_container"
@@ -252,8 +248,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
 
@@ -265,12 +261,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:orientation="vertical"
+                    android:gravity="center"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="5dp">
+                    android:focusable="true">
 
                     <FrameLayout
                         android:layout_width="48dp"
@@ -307,12 +301,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:orientation="vertical"
+                    android:gravity="center"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="5dp">
+                    android:focusable="true">
 
                     <FrameLayout
                         android:layout_width="48dp"
@@ -347,12 +339,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:orientation="vertical"
+                    android:gravity="center"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="5dp">
+                    android:focusable="true">
 
                     <FrameLayout
                         android:layout_width="48dp"
@@ -387,12 +377,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
                     android:orientation="vertical"
+                    android:gravity="center"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="5dp">
+                    android:focusable="true">
 
                     <FrameLayout
                         android:layout_width="48dp"
