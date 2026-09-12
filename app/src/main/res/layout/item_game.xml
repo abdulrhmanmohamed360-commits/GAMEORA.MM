@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="92dp"
+    android:layout_height="128dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="@dimen/spacing_m"
+    android:padding="6dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="?attr/selectableItemBackgroundBorderless">
+    android:background="@drawable/bg_game_card">
 
-    <ImageView
-        android:id="@+id/game_icon"
-        android:layout_width="@dimen/game_icon_size"
-        android:layout_height="@dimen/game_icon_size"
-        android:background="@drawable/bg_placeholder"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop" />
+    <FrameLayout
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:background="@drawable/bg_game_image">
+
+        <ImageView
+            android:id="@+id/game_icon"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/game_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_s"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:textColor="@color/text_primary"
         android:textSize="13sp"
+        android:textStyle="bold"
         android:maxLines="1"
         android:ellipsize="end" />
+
 </LinearLayout>
