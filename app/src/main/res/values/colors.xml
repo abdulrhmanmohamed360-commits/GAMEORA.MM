@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Gameora Black & White Theme -->
-    <color name="brand_primary">#FFFFFF</color>
-    <color name="brand_primary_dark">#D9D9D9</color>
-    <color name="brand_secondary">#F2F2F2</color>
-    <color name="brand_accent">#FFFFFF</color>
+    <!-- Gameora Dark Blue + Light Cyan Theme -->
+    <color name="brand_primary">#38BDF8</color>
+    <color name="brand_primary_dark">#0284C7</color>
+    <color name="brand_secondary">#60D5FF</color>
+    <color name="brand_accent">#7DDFFF</color>
 
     <!-- Backgrounds -->
-    <color name="bg_screen">#050505</color>
-    <color name="bg_surface">#0D0D0D</color>
-    <color name="bg_error">#241010</color>
-    <color name="bg_empty">#151515</color>
+    <color name="bg_screen">#07111F</color>
+    <color name="bg_surface">#0D1B2A</color>
+    <color name="bg_error">#251018</color>
+    <color name="bg_empty">#132238</color>
 
     <!-- Text -->
     <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#B8B8B8</color>
-    <color name="text_hint">#707070</color>
-    <color name="text_inverse">#050505</color>
+    <color name="text_secondary">#A8B6C7</color>
+    <color name="text_hint">#718198</color>
+    <color name="text_inverse">#07111F</color>
 
     <!-- Status -->
-    <color name="error_color">#FF5252</color>
-    <color name="success_color">#FFFFFF</color>
-    <color name="warning_color">#FFD166</color>
-    <color name="divider_color">#252525</color>
+    <color name="error_color">#FF5364</color>
+    <color name="success_color">#35D07F</color>
+    <color name="warning_color">#FFB84D</color>
+    <color name="divider_color">#1C3047</color>
 
     <!-- Launcher -->
-    <color name="ic_launcher_background">#050505</color>
+    <color name="ic_launcher_background">#07111F</color>
 
 </resources>
