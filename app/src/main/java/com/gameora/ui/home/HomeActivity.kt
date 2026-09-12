@@ -47,20 +47,19 @@ class HomeActivity :
 
             gameName.text = game.name
 
-            // استخدام صورة محلية عند عدم وجود صورة من الـBackend
             when {
                 game.name.contains("free fire", ignoreCase = true) ||
                 game.name.contains("freefire", ignoreCase = true) -> {
 
                     gameIcon.setImageResource(
-                        R.drawable.img_freefier
+                        R.drawable.img_freefire
                     )
                 }
 
                 game.name.contains("pubg", ignoreCase = true) -> {
 
                     gameIcon.setImageResource(
-                        R.drawable.pebgmobail
+                        R.drawable.pubg_mobile
                     )
                 }
 
@@ -113,10 +112,6 @@ class HomeActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // ==========================================
-        // State
-        // ==========================================
 
         stateView = StateView(
             binding.stateView.root
@@ -186,7 +181,7 @@ class HomeActivity :
         // ==========================================
 
         binding.navHome.setOnClickListener {
-            // نحن بالفعل في الصفحة الرئيسية
+            // الصفحة الرئيسية
         }
 
         binding.navStore.setOnClickListener {
