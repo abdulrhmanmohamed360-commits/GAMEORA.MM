@@ -39,19 +39,43 @@ class HomeActivity :
 
         onBind = { v, game, _ ->
 
-            Images.load(
-                v.findViewById<ImageView>(R.id.game_icon),
-                game.iconUrl ?: game.imageUrl
-            )
+            val gameIcon =
+                v.findViewById<ImageView>(R.id.game_icon)
 
-            v.findViewById<TextView>(R.id.game_name).text =
-                game.name
+            val gameName =
+                v.findViewById<TextView>(R.id.game_name)
+
+            gameName.text = game.name
+
+            // استخدام صورة محلية عند عدم وجود صورة من الـBackend
+            when {
+                game.name.contains("free fire", ignoreCase = true) ||
+                game.name.contains("freefire", ignoreCase = true) -> {
+
+                    gameIcon.setImageResource(
+                        R.drawable.img_freefier
+                    )
+                }
+
+                game.name.contains("pubg", ignoreCase = true) -> {
+
+                    gameIcon.setImageResource(
+                        R.drawable.pebgmobail
+                    )
+                }
+
+                else -> {
+
+                    Images.load(
+                        gameIcon,
+                        game.iconUrl ?: game.imageUrl
+                    )
+                }
+            }
         },
 
         onClick = { game, _ ->
 
-            // عند الضغط على اللعبة
-            // نفتح صفحة خدمات اللعبة
             startActivity(
                 Intent(
                     this,
@@ -161,17 +185,14 @@ class HomeActivity :
         // Bottom Navigation
         // ==========================================
 
-        // الرئيسية
         binding.navHome.setOnClickListener {
             // نحن بالفعل في الصفحة الرئيسية
         }
 
-        // المتجر
         binding.navStore.setOnClickListener {
             openStore()
         }
 
-        // المحفظة
         binding.navWallet.setOnClickListener {
 
             requireLogin {
@@ -185,7 +206,6 @@ class HomeActivity :
             }
         }
 
-        // البروفايل
         binding.navProfile.setOnClickListener {
 
             startActivity(
