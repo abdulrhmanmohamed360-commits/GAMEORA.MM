@@ -47,30 +47,10 @@ class HomeActivity :
 
             gameName.text = game.name
 
-            when {
-                game.name.contains("free fire", ignoreCase = true) ||
-                game.name.contains("freefire", ignoreCase = true) -> {
-
-                    gameIcon.setImageResource(
-                        R.drawable.img_freefire
-                    )
-                }
-
-                game.name.contains("pubg", ignoreCase = true) -> {
-
-                    gameIcon.setImageResource(
-                        R.drawable.pubg_mobile
-                    )
-                }
-
-                else -> {
-
-                    Images.load(
-                        gameIcon,
-                        game.iconUrl ?: game.imageUrl
-                    )
-                }
-            }
+            Images.load(
+                gameIcon,
+                game.iconUrl ?: game.imageUrl
+            )
         },
 
         onClick = { game, _ ->
@@ -262,3 +242,4 @@ class HomeActivity :
         )
     }
     }
+    
