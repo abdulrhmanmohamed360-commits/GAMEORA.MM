@@ -94,70 +94,74 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Featured Offers -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/offers_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="20dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/bg_surface"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/brand_primary"
-                    app:strokeWidth="1dp">
+            <!-- Featured Offers -->
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/offers_banner"
+    android:layout_width="match_parent"
+    android:layout_height="155dp"
+    android:layout_marginTop="20dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/bg_surface"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/brand_primary"
+    app:strokeWidth="1dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="22dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="22dp"
+        android:paddingEnd="18dp">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="اكتشف عروض Gameora"
-                                android:textColor="@color/text_primary"
-                                android:textSize="21sp"
-                                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="عروض Gameora المميزة"
+                android:textColor="@color/text_primary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:text="أفضل الفرص والعروض المميزة للألعاب"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="اكتشف فرصًا مميزة وأسعارًا تنافسية في مكان واحد"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                android:maxLines="2" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="عرض العروض"
-                                android:textColor="@color/brand_secondary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="استكشف العروض  →"
+                android:textColor="@color/brand_secondary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-                        </LinearLayout>
+        </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:contentDescription="@null"
-                            android:src="@android:drawable/ic_media_play"
-                            android:tint="@color/brand_primary" />
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:src="@android:drawable/ic_media_play"
+            android:tint="@color/brand_primary" />
 
-                    </LinearLayout>
+    </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
+    
 
                 <!-- Games -->
                 <TextView
