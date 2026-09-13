@@ -1,6 +1,7 @@
 package com.gameora.ui.products
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -18,6 +19,7 @@ import com.gameora.ui.common.Images
 import com.gameora.ui.common.Nav
 import com.gameora.ui.common.StateView
 import com.gameora.ui.productdetail.ProductDetailActivity
+import com.gameora.ui.sell.SellActivity
 import com.gameora.util.UiState
 
 class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsBinding::inflate) {
@@ -28,58 +30,127 @@ class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsB
     private val adapter = GenericAdapter<Product>(
         layoutRes = R.layout.item_product,
         onBind = { v, p, _ ->
-            Images.load(v.findViewById<ImageView>(R.id.product_image), p.images.firstOrNull())
+            Images.load(
+                v.findViewById<ImageView>(R.id.product_image),
+                p.images.firstOrNull()
+            )
+
             v.findViewById<TextView>(R.id.product_title).text = p.title
-            v.findViewById<TextView>(R.id.product_price).text = Formatters.price(p.price, p.currency)
+
+            v.findViewById<TextView>(R.id.product_price).text =
+                Formatters.price(p.price, p.currency)
+
             v.findViewById<TextView>(R.id.product_meta).text =
-                listOfNotNull(p.rank, p.level, p.server).joinToString(" · ")
+                listOfNotNull(p.rank, p.level, p.server)
+                    .joinToString(" · ")
+
             v.findViewById<TextView>(R.id.product_seller).visibility = View.GONE
         },
         onClick = { p, _ ->
-            startActivity(android.content.Intent(this, ProductDetailActivity::class.java).apply {
-                putExtra(Nav.PRODUCT_ID, p.id)
-            })
+            startActivity(
+                Intent(this, ProductDetailActivity::class.java).apply {
+                    putExtra(Nav.PRODUCT_ID, p.id)
+                }
+            )
         }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        stateView = StateView(binding.stateView.root) { vm.loadFirst() }
+        stateView = StateView(binding.stateView.root) {
+            vm.loadFirst()
+        }
 
         val gameId = intent.getStringExtra(Nav.GAME_ID)
+
         vm.init(gameId)
-        binding.toolbar.title = intent.getStringExtra(Nav.TITLE) ?: getString(R.string.products_title)
-        binding.toolbar.setNavigationOnClickListener { finish() }
 
-        binding.productsRecycler.layoutManager = LinearLayoutManager(this)
+        binding.toolbar.title =
+            intent.getStringExtra(Nav.TITLE)
+                ?: getString(R.string.products_title)
+
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        binding.productsRecycler.layoutManager =
+            LinearLayoutManager(this)
+
         binding.productsRecycler.adapter = adapter
-        binding.productsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                val lm = rv.layoutManager as LinearLayoutManager
-                if (lm.findLastVisibleItemPosition() >= adapter.itemCount - 3) vm.loadMore()
-            }
-        })
 
-        binding.productsSearch.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH) {
-                vm.setQuery(binding.productsSearch.text?.toString()?.trim())
+        binding.productsRecycler.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(
+                    rv: RecyclerView,
+                    dx: Int,
+                    dy: Int
+                ) {
+                    val lm = rv.layoutManager as LinearLayoutManager
+
+                    if (lm.findLastVisibleItemPosition() >= adapter.itemCount - 3) {
+                        vm.loadMore()
+                    }
+                }
+            }
+        )
+
+        binding.productsSearch.setOnEditorActionListener {
+                _, actionId, _ ->
+
+            if (
+                actionId ==
+                android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+            ) {
+                vm.setQuery(
+                    binding.productsSearch.text
+                        ?.toString()
+                        ?.trim()
+                )
+
                 vm.loadFirst()
+
                 true
-            } else false
+            } else {
+                false
+            }
         }
 
         binding.productsFilterButton.setOnClickListener {
-            ProductsFilterSheet().show(supportFragmentManager, "filters")
+            ProductsFilterSheet()
+                .show(
+                    supportFragmentManager,
+                    "filters"
+                )
         }
 
-        binding.productsRefresh.setOnRefreshListener { vm.loadFirst() }
+        binding.productsRefresh.setOnRefreshListener {
+            vm.loadFirst()
+        }
+
+        /*
+         * Sell banner
+         *
+         * الضغط على بانر:
+         * "ابدأ البيع ←"
+         * يفتح شاشة إنشاء المنتج.
+         */
+        binding.sellBanner.setOnClickListener {
+            startActivity(
+                Intent(this, SellActivity::class.java)
+            )
+        }
 
         vm.products.observe(this) { state ->
             binding.productsRefresh.isRefreshing = false
+
             stateView.bind(state)
-            if (state is UiState.Success) adapter.submit(state.data)
+
+            if (state is UiState.Success) {
+                adapter.submit(state.data)
+            }
         }
+
         vm.loadingMore.observe(this) { loading ->
             adapter.showFooter(loading)
         }
@@ -88,9 +159,17 @@ class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsB
     }
 
     fun applyFilters(filters: Map<String, String>) {
-        val query = binding.productsSearch.text?.toString()?.trim()
+        val query =
+            binding.productsSearch.text
+                ?.toString()
+                ?.trim()
+
         val withQuery = filters.toMutableMap()
-        if (!query.isNullOrBlank()) withQuery["search"] = query
+
+        if (!query.isNullOrBlank()) {
+            withQuery["search"] = query
+        }
+
         vm.applyFilters(withQuery)
     }
 
