@@ -29,7 +29,7 @@
             <!-- Main Account Image -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="225dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
@@ -49,18 +49,16 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Additional Images -->
+            <!-- Gallery -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_images"
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
-                android:orientation="horizontal"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp" />
 
-            <!-- Main Content -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,18 +73,19 @@
                     android:id="@+id/detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Gameora.Title"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textColor="@color/text_primary"
-                    android:textSize="22sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
 
-                <!-- Price Card -->
+                <!-- Price -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     app:cardBackgroundColor="@color/bg_surface"
-                    app:cardCornerRadius="16dp"
+                    app:cardCornerRadius="17dp"
                     app:cardElevation="0dp"
                     app:strokeColor="@color/divider_color"
                     app:strokeWidth="1dp">
@@ -96,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="14dp">
+                        android:padding="15dp">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -115,10 +114,9 @@
                                 android:id="@+id/detail_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:textAppearance="@style/TextAppearance.Gameora.Price"
+                                android:layout_marginTop="3dp"
                                 android:textColor="@color/brand_primary"
-                                android:textSize="21sp"
+                                android:textSize="23sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -126,7 +124,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="متاح الآن"
+                            android:text="متاح للشراء"
                             android:textColor="@color/brand_primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -135,13 +133,13 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Account Meta -->
+                <!-- Account Information -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     app:cardBackgroundColor="@color/bg_surface"
-                    app:cardCornerRadius="16dp"
+                    app:cardCornerRadius="17dp"
                     app:cardElevation="0dp"
                     app:strokeColor="@color/divider_color"
                     app:strokeWidth="1dp">
@@ -150,21 +148,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="14dp">
+                        android:padding="15dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="تفاصيل الحساب"
                             android:textColor="@color/text_primary"
-                            android:textSize="16sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/detail_meta"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="9dp"
+                            android:lineSpacingExtra="3dp"
                             android:textColor="@color/text_secondary"
                             android:textSize="13sp" />
 
@@ -187,8 +186,8 @@
                     android:id="@+id/detail_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:lineSpacingExtra="3dp"
+                    android:layout_marginTop="8dp"
+                    android:lineSpacingExtra="4dp"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
@@ -278,7 +277,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="22dp"
                     android:text="@string/reviews"
-                    android:textAppearance="@style/TextAppearance.Gameora.Title"
                     android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -290,7 +288,7 @@
                     android:layout_marginTop="8dp"
                     android:nestedScrollingEnabled="false" />
 
-                <!-- Actions -->
+                <!-- Buy -->
                 <Button
                     android:id="@+id/detail_buy"
                     style="@style/Widget.Gameora.Button"
@@ -299,6 +297,7 @@
                     android:layout_marginTop="22dp"
                     android:text="@string/buy_now" />
 
+                <!-- Chat -->
                 <Button
                     android:id="@+id/detail_contact"
                     style="@style/Widget.Gameora.Button"
@@ -314,7 +313,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Loading / Error -->
+    <!-- Loading / Error State -->
     <include
         android:id="@+id/state_view"
         layout="@layout/layout_state"
