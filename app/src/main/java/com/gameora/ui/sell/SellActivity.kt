@@ -41,6 +41,7 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
         super.onCreate(savedInstanceState)
 
         binding.toolbar.title = getString(R.string.sell_title)
+
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -127,38 +128,41 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
 
         binding.sellImagesPreview.removeAllViews()
 
-        selectedImages.forEachIndexed { index, uri ->
+        val size =
+            (100 * resources.displayMetrics.density).toInt()
 
-            val imageContainer = LinearLayout(this).apply {
-                orientation = LinearLayout.VERTICAL
-                setPadding(4)
-            }
+        selectedImages.forEachIndexed { index, uri ->
 
             val imageView = ImageView(this).apply {
 
                 layoutParams = LinearLayout.LayoutParams(
-                    100.dp(),
-                    100.dp
-                )
+                    size,
+                    size
+                ).apply {
+                    setMargins(6, 0, 6, 0)
+                }
 
                 scaleType = ImageView.ScaleType.CENTER_CROP
                 contentDescription = null
 
                 setImageURI(uri)
 
+                setPadding(2)
+
                 setBackgroundResource(
                     android.R.drawable.picture_frame
                 )
 
                 setOnClickListener {
-                    selectedImages.removeAt(index)
-                    showImagePreviews()
+
+                    if (index < selectedImages.size) {
+                        selectedImages.removeAt(index)
+                        showImagePreviews()
+                    }
                 }
             }
 
-            imageContainer.addView(imageView)
-
-            binding.sellImagesPreview.addView(imageContainer)
+            binding.sellImagesPreview.addView(imageView)
         }
     }
 
@@ -196,14 +200,14 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
                 ?: "USD"
 
         /*
-         * مؤقتًا نحول الصور المختارة إلى URI strings.
-         *
-         * في الخطوة القادمة سيتم رفع الصور إلى Firebase Storage
-         * وتحويلها إلى روابط آمنة قبل إرسال ProductCreateDto.
+         * الصور حاليًا محفوظة كـUri محلي مؤقتًا.
+         * سيتم لاحقًا رفعها إلى خدمة تخزين مجانية
+         * وتحويلها إلى روابط HTTPS.
          */
         val images =
-            selectedImages
-                .map { it.toString() }
+            selectedImages.map {
+                it.toString()
+            }
 
         val dto = ProductCreateDto(
 
@@ -245,9 +249,5 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
         )
 
         vm.create(dto)
-    }
-
-    private fun Int.dp(): Int {
-        return (this * resources.displayMetrics.density).toInt()
     }
 }
