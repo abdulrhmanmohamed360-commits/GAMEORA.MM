@@ -84,6 +84,17 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Product meta required by ProductsActivity -->
+            <TextView
+                android:id="@+id/product_meta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
             <!-- Account details -->
             <LinearLayout
                 android:layout_width="match_parent"
