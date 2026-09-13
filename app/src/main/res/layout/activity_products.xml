@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- Toolbar -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             app:title="المتجر"
             app:titleTextColor="@color/text_primary" />
 
+        <!-- Main Scroll -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/products_scroll"
             android:layout_width="match_parent"
@@ -35,6 +37,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Store Header -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -110,9 +113,12 @@
 
                 <!-- Sell Banner -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/sell_banner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardBackgroundColor="@color/bg_surface"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="0dp"
@@ -196,21 +202,20 @@
 
                 </LinearLayout>
 
-                <!-- Products List -->
+                <!-- Products -->
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/products_refresh"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:enabled="true">
+                    android:layout_marginTop="10dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/products_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clipToPadding="false"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
-                        android:clipToPadding="false"
                         android:paddingBottom="32dp" />
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -221,6 +226,7 @@
 
     </LinearLayout>
 
+    <!-- Loading / Error State -->
     <include
         android:id="@+id/state_view"
         layout="@layout/layout_state"
