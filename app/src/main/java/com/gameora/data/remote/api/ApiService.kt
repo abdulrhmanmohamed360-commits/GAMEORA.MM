@@ -22,6 +22,7 @@ import com.gameora.data.remote.dto.ReviewDto
 import com.gameora.data.remote.dto.SellerDto
 import com.gameora.data.remote.dto.TransactionDto
 import com.gameora.data.remote.dto.UserDto
+import com.gameora.data.remote.dto.WalletDepositResponseDto
 import com.gameora.data.remote.dto.WalletDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -181,6 +182,19 @@ interface ApiService {
     suspend fun getWalletTransactions(
         @QueryMap filters: Map<String, String>
     ): PaginatedDto<TransactionDto>
+
+    /**
+     * Creates a pending wallet deposit and returns
+     * the real Paymob checkout URL.
+     *
+     * The wallet is NOT credited by this request.
+     * Credit happens only after Paymob confirms
+     * the transaction through the backend webhook.
+     */
+    @POST("wallet/deposit/create")
+    suspend fun createWalletDeposit(
+        @Body body: Map<String, Any>
+    ): WalletDepositResponseDto
 
     // ----------------------------------------------------------------- Offers
 
