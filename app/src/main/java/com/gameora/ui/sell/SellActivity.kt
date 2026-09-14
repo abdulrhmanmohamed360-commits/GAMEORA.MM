@@ -24,6 +24,8 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
 
     private val selectedImages = mutableListOf<Uri>()
 
+    private var currentStep = 0
+
     private val imagePicker =
         registerForActivityResult(
             ActivityResultContracts.GetMultipleContents()
@@ -51,10 +53,13 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
         setupObservers()
         setupActions()
 
+        updateStep()
+
         vm.loadLookups()
     }
 
     private fun setupCurrency() {
+
         binding.sellCurrency.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
@@ -97,6 +102,12 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
             binding.sellSave.isEnabled =
                 state !is UiState.Loading
 
+            binding.sellNext.isEnabled =
+                state !is UiState.Loading
+
+            binding.sellPrevious.isEnabled =
+                state !is UiState.Loading
+
             when (state) {
 
                 is UiState.Success -> {
@@ -115,12 +126,120 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
 
     private fun setupActions() {
 
+        binding.sellNext.setOnClickListener {
+
+            when (currentStep) {
+
+                0 -> {
+                    if (validateStepOne()) {
+                        goToStep(1)
+                    }
+                }
+
+                1 -> {
+                    goToStep(2)
+                }
+
+                2 -> {
+                    goToStep(3)
+                }
+
+                3 -> {
+                    save()
+                }
+            }
+        }
+
+        binding.sellPrevious.setOnClickListener {
+
+            if (currentStep > 0) {
+                goToStep(currentStep - 1)
+            }
+        }
+
         binding.sellSave.setOnClickListener {
             save()
         }
 
         binding.sellPickImages.setOnClickListener {
             imagePicker.launch("image/*")
+        }
+    }
+
+    private fun validateStepOne(): Boolean {
+
+        val title =
+            binding.sellTitle.text
+                ?.toString()
+                ?.trim()
+                .orEmpty()
+
+        if (title.isEmpty()) {
+            binding.sellTitle.error = "اكتب اسم الإعلان"
+            binding.sellTitle.requestFocus()
+            return false
+        }
+
+        val games = vm.games.value.orEmpty()
+
+        if (games.isEmpty()) {
+            toast("لم يتم تحميل الألعاب بعد")
+            return false
+        }
+
+        val categories = vm.categories.value.orEmpty()
+
+        if (categories.isEmpty()) {
+            toast("لم يتم تحميل أنواع الحسابات بعد")
+            return false
+        }
+
+        return true
+    }
+
+    private fun goToStep(step: Int) {
+
+        if (step < 0 || step > 3) {
+            return
+        }
+
+        currentStep = step
+
+        updateStep()
+
+        binding.sellScroll.post {
+            binding.sellScroll.scrollTo(0, 0)
+        }
+    }
+
+    private fun updateStep() {
+
+        binding.sellSteps.displayedChild = currentStep
+
+        binding.sellStepTitle.text =
+            "الخطوة ${currentStep + 1} من 4"
+
+        binding.sellStepProgress.progress =
+            currentStep + 1
+
+        if (currentStep == 0) {
+
+            binding.sellPrevious.visibility = View.GONE
+
+        } else {
+
+            binding.sellPrevious.visibility = View.VISIBLE
+        }
+
+        if (currentStep == 3) {
+
+            binding.sellNext.visibility = View.GONE
+            binding.sellSave.visibility = View.VISIBLE
+
+        } else {
+
+            binding.sellNext.visibility = View.VISIBLE
+            binding.sellSave.visibility = View.GONE
         }
     }
 
@@ -143,6 +262,7 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
                 }
 
                 scaleType = ImageView.ScaleType.CENTER_CROP
+
                 contentDescription = null
 
                 setImageURI(uri)
@@ -156,7 +276,9 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
                 setOnClickListener {
 
                     if (index < selectedImages.size) {
+
                         selectedImages.removeAt(index)
+
                         showImagePreviews()
                     }
                 }
@@ -180,13 +302,35 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
                 ?.trim()
                 ?.toDoubleOrNull()
 
-        if (title.isEmpty() || price == null) {
-            toast(R.string.error_generic)
+        if (title.isEmpty()) {
+
+            toast("اكتب اسم الإعلان")
+
+            currentStep = 0
+            updateStep()
+
+            binding.sellTitle.requestFocus()
+
             return
         }
 
-        val games = vm.games.value.orEmpty()
-        val cats = vm.categories.value.orEmpty()
+        if (price == null || price <= 0) {
+
+            toast("أدخل سعرًا صحيحًا")
+
+            currentStep = 3
+            updateStep()
+
+            binding.sellPrice.requestFocus()
+
+            return
+        }
+
+        val games =
+            vm.games.value.orEmpty()
+
+        val cats =
+            vm.categories.value.orEmpty()
 
         val gamePos =
             binding.sellGame.selectedItemPosition
@@ -200,10 +344,11 @@ class SellActivity : BaseActivity<ActivitySellBinding>(ActivitySellBinding::infl
                 ?: "USD"
 
         /*
-         * الصور حاليًا محفوظة كـUri محلي مؤقتًا.
+         * الصور حاليًا محفوظة كـ Uri محلي مؤقتًا.
          * سيتم لاحقًا رفعها إلى خدمة تخزين مجانية
          * وتحويلها إلى روابط HTTPS.
          */
+
         val images =
             selectedImages.map {
                 it.toString()
