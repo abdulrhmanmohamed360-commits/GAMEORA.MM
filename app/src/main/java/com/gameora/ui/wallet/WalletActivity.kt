@@ -1,5 +1,6 @@
 package com.gameora.ui.wallet
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -70,7 +71,10 @@ class WalletActivity :
                 val wallet = state.data
 
                 currentBalanceText =
-                    Formatters.price(wallet.balance, wallet.currency)
+                    Formatters.price(
+                        wallet.balance,
+                        wallet.currency
+                    )
 
                 updateBalanceVisibility()
 
@@ -129,12 +133,19 @@ class WalletActivity :
 
     private fun setupWalletActions() {
 
+        // إضافة رصيد
         binding.walletAddBalanceCard.setOnClickListener {
-            // سيتم ربطها بصفحة الدفع الفعلية في الخطوة القادمة.
+            startActivity(
+                Intent(
+                    this,
+                    PaymentActivity::class.java
+                )
+            )
         }
 
+        // السحب - هنربطه بعدين
         binding.walletWithdrawCard.setOnClickListener {
-            // سيتم ربطها بصفحة السحب الفعلية في الخطوة القادمة.
+            // سيتم ربط صفحة السحب في الخطوة القادمة.
         }
     }
 
