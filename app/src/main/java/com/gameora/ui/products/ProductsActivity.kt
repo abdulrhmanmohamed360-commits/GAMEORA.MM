@@ -1,12 +1,15 @@
 package com.gameora.ui.products
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gameora.R
@@ -22,38 +25,20 @@ import com.gameora.ui.productdetail.ProductDetailActivity
 import com.gameora.ui.sell.SellActivity
 import com.gameora.util.UiState
 
-class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsBinding::inflate) {
+class ProductsActivity :
+    BaseActivity<ActivityProductsBinding>(ActivityProductsBinding::inflate) {
 
-    private val vm by lazy { ViewModelProvider(this)[ProductsViewModel::class.java] }
+    private val vm by lazy {
+        ViewModelProvider(this)[ProductsViewModel::class.java]
+    }
+
     private lateinit var stateView: StateView
 
-    private val adapter = GenericAdapter<Product>(
-        layoutRes = R.layout.item_product,
-        onBind = { v, p, _ ->
-            Images.load(
-                v.findViewById<ImageView>(R.id.product_image),
-                p.images.firstOrNull()
-            )
+    private lateinit var productsAdapter: GenericAdapter<Product>
+    private lateinit var concatAdapter: ConcatAdapter
 
-            v.findViewById<TextView>(R.id.product_title).text = p.title
-
-            v.findViewById<TextView>(R.id.product_price).text =
-                Formatters.price(p.price, p.currency)
-
-            v.findViewById<TextView>(R.id.product_meta).text =
-                listOfNotNull(p.rank, p.level, p.server)
-                    .joinToString(" · ")
-
-            v.findViewById<TextView>(R.id.product_seller).visibility = View.GONE
-        },
-        onClick = { p, _ ->
-            startActivity(
-                Intent(this, ProductDetailActivity::class.java).apply {
-                    putExtra(Nav.PRODUCT_ID, p.id)
-                }
-            )
-        }
-    )
+    private val headerAdapter =
+        HeaderAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,49 +59,121 @@ class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsB
             finish()
         }
 
+        setupProductsAdapter()
+        setupHeaderActions()
+        setupObservers()
+
+        vm.loadFirst()
+    }
+
+    private fun setupProductsAdapter() {
+
+        productsAdapter = GenericAdapter<Product>(
+            layoutRes = R.layout.item_product,
+
+            onBind = { v, p, _ ->
+
+                Images.load(
+                    v.findViewById<ImageView>(R.id.product_image),
+                    p.images.firstOrNull()
+                )
+
+                v.findViewById<TextView>(
+                    R.id.product_title
+                ).text = p.title
+
+                v.findViewById<TextView>(
+                    R.id.product_price
+                ).text = Formatters.price(
+                    p.price,
+                    p.currency
+                )
+
+                v.findViewById<TextView>(
+                    R.id.product_meta
+                ).text =
+                    listOfNotNull(
+                        p.rank,
+                        p.level,
+                        p.server
+                    ).joinToString(" · ")
+
+                v.findViewById<TextView>(
+                    R.id.product_seller
+                ).visibility = View.GONE
+            },
+
+            onClick = { p, _ ->
+
+                startActivity(
+                    Intent(
+                        this,
+                        ProductDetailActivity::class.java
+                    ).apply {
+                        putExtra(
+                            Nav.PRODUCT_ID,
+                            p.id
+                        )
+                    }
+                )
+            }
+        )
+
+        concatAdapter = ConcatAdapter(
+            headerAdapter,
+            productsAdapter
+        )
+
         binding.productsRecycler.layoutManager =
             LinearLayoutManager(this)
 
-        binding.productsRecycler.adapter = adapter
+        binding.productsRecycler.adapter =
+            concatAdapter
 
         binding.productsRecycler.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
+
                 override fun onScrolled(
                     rv: RecyclerView,
                     dx: Int,
                     dy: Int
                 ) {
-                    val lm = rv.layoutManager as LinearLayoutManager
 
-                    if (lm.findLastVisibleItemPosition() >= adapter.itemCount - 3) {
+                    if (dy <= 0) return
+
+                    val lm =
+                        rv.layoutManager as LinearLayoutManager
+
+                    val last =
+                        lm.findLastVisibleItemPosition()
+
+                    val total =
+                        concatAdapter.itemCount
+
+                    if (last >= total - 3) {
                         vm.loadMore()
                     }
                 }
             }
         )
+    }
 
-        binding.productsSearch.setOnEditorActionListener {
-                _, actionId, _ ->
+    private fun setupHeaderActions() {
 
-            if (
-                actionId ==
-                android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
-            ) {
-                vm.setQuery(
-                    binding.productsSearch.text
-                        ?.toString()
-                        ?.trim()
-                )
+        headerAdapter.onSearch = {
 
-                vm.loadFirst()
+            headerAdapter.searchText
+                ?.trim()
+                ?.takeIf { it.isNotEmpty() }
+                ?.let { query ->
+                    vm.setQuery(query)
+                }
 
-                true
-            } else {
-                false
-            }
+            vm.loadFirst()
         }
 
-        binding.productsFilterButton.setOnClickListener {
+        headerAdapter.onFilter = {
+
             ProductsFilterSheet()
                 .show(
                     supportFragmentManager,
@@ -124,47 +181,43 @@ class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsB
                 )
         }
 
-        binding.productsRefresh.setOnRefreshListener {
-            vm.loadFirst()
-        }
+        headerAdapter.onSell = {
 
-        /*
-         * Sell banner
-         *
-         * الضغط على بانر:
-         * "ابدأ البيع ←"
-         * يفتح شاشة إنشاء المنتج.
-         */
-        binding.sellBanner.setOnClickListener {
             startActivity(
-                Intent(this, SellActivity::class.java)
+                Intent(
+                    this,
+                    SellActivity::class.java
+                )
             )
         }
+    }
+
+    private fun setupObservers() {
 
         vm.products.observe(this) { state ->
-            binding.productsRefresh.isRefreshing = false
 
             stateView.bind(state)
 
             if (state is UiState.Success) {
-                adapter.submit(state.data)
+                productsAdapter.submit(state.data)
             }
         }
 
         vm.loadingMore.observe(this) { loading ->
-            adapter.showFooter(loading)
+            productsAdapter.showFooter(loading)
         }
-
-        vm.loadFirst()
     }
 
-    fun applyFilters(filters: Map<String, String>) {
+    fun applyFilters(
+        filters: Map<String, String>
+    ) {
+
         val query =
-            binding.productsSearch.text
-                ?.toString()
+            headerAdapter.searchText
                 ?.trim()
 
-        val withQuery = filters.toMutableMap()
+        val withQuery =
+            filters.toMutableMap()
 
         if (!query.isNullOrBlank()) {
             withQuery["search"] = query
@@ -174,6 +227,94 @@ class ProductsActivity : BaseActivity<ActivityProductsBinding>(ActivityProductsB
     }
 
     fun clearFilters() {
-        vm.clearFilters(keepQuery = true)
+        vm.clearFilters(
+            keepQuery = true
+        )
     }
-}
+
+    private class HeaderAdapter :
+        RecyclerView.Adapter<HeaderAdapter.HeaderHolder>() {
+
+        var onSearch: (() -> Unit)? = null
+        var onFilter: (() -> Unit)? = null
+        var onSell: (() -> Unit)? = null
+
+        var searchText: String? = null
+
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): HeaderHolder {
+
+            val view =
+                LayoutInflater.from(parent.context)
+                    .inflate(
+                        R.layout.item_products_header,
+                        parent,
+                        false
+                    )
+
+            return HeaderHolder(view)
+        }
+
+        override fun onBindViewHolder(
+            holder: HeaderHolder,
+            position: Int
+        ) {
+
+            holder.search.setOnEditorActionListener {
+                    _, actionId, _ ->
+
+                if (
+                    actionId ==
+                    EditorInfo.IME_ACTION_SEARCH
+                ) {
+
+                    searchText =
+                        holder.search.text
+                            ?.toString()
+
+                    onSearch?.invoke()
+
+                    true
+                } else {
+                    false
+                }
+            }
+
+            holder.filter.setOnClickListener {
+                onFilter?.invoke()
+            }
+
+            holder.sell.setOnClickListener {
+                onSell?.invoke()
+            }
+        }
+
+        override fun getItemCount(): Int = 1
+
+        class HeaderHolder(
+            view: View
+        ) : RecyclerView.ViewHolder(view) {
+
+            val search =
+                view.findViewById<android.widget.EditText>(
+                    R.id.products_search
+                )
+
+            val filter =
+                view.findViewById<
+                    com.google.android.material.button.MaterialButton
+                >(
+                    R.id.products_filter_button
+                )
+
+            val sell =
+                view.findViewById<
+                    com.google.android.material.card.MaterialCardView
+                >(
+                    R.id.sell_banner
+                )
+        }
+    }
+    }
