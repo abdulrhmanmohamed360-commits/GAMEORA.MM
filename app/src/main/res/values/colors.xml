@@ -13,6 +13,10 @@
     <color name="bg_error">#251018</color>
     <color name="bg_empty">#132238</color>
 
+    <!-- Compatibility colors -->
+    <color name="background">#07111F</color>
+    <color name="divider">#1C3047</color>
+
     <!-- Text -->
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#A8B6C7</color>
