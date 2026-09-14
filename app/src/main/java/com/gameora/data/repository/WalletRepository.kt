@@ -6,14 +6,51 @@ import com.gameora.domain.model.Transaction
 import com.gameora.domain.model.Wallet
 import com.gameora.util.Paged
 
-class WalletRepository(private val api: ApiService) {
+class WalletRepository(
+    private val api: ApiService
+) {
 
     /** Real balance — never hard-coded. Always re-fetched from the server. */
-    suspend fun getWallet(): Result<Wallet> = safeApi { api.getWallet().toDomain() }
-
-    suspend fun getTransactions(page: Int, limit: Int): Result<Paged<Transaction>> =
+    suspend fun getWallet(): Result<Wallet> =
         safeApi {
-            val f = mapOf("page" to page.toString(), "limit" to limit.toString())
-            api.getWalletTransactions(f).toDomain(page, limit) { it.toDomain() }
+            api.getWallet().toDomain()
+        }
+
+    suspend fun getTransactions(
+        page: Int,
+        limit: Int
+    ): Result<Paged<Transaction>> =
+        safeApi {
+            val filters = mapOf(
+                "page" to page.toString(),
+                "limit" to limit.toString()
+            )
+
+            api.getWalletTransactions(filters)
+                .toDomain(page, limit) {
+                    it.toDomain()
+                }
+        }
+
+    /**
+     * Creates a pending wallet deposit on the backend.
+     *
+     * The backend creates the Paymob intention and returns
+     * the real checkout URL.
+     *
+     * The wallet is NOT credited here.
+     * It is credited only after Paymob confirms payment
+     * through the backend webhook.
+     */
+    suspend fun createDeposit(
+        amount: Double
+    ): Result<com.gameora.data.remote.dto.WalletDepositResponseDto> =
+        safeApi {
+            api.createWalletDeposit(
+                mapOf(
+                    "amount" to amount,
+                    "currency" to "EGP"
+                )
+            )
         }
 }
