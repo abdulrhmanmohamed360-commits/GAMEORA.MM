@@ -13,38 +13,142 @@ import com.gameora.ui.common.GenericAdapter
 import com.gameora.ui.common.StateView
 import com.gameora.util.UiState
 
-class WalletActivity : BaseActivity<ActivityWalletBinding>(ActivityWalletBinding::inflate) {
+class WalletActivity :
+    BaseActivity<ActivityWalletBinding>(ActivityWalletBinding::inflate) {
 
-    private val vm by lazy { ViewModelProvider(this)[WalletViewModel::class.java] }
+    private val vm by lazy {
+        ViewModelProvider(this)[WalletViewModel::class.java]
+    }
+
     private lateinit var stateView: StateView
+
+    private var balanceVisible = true
+    private var currentBalanceText = "0.00 EGP"
 
     private val txAdapter = GenericAdapter<Transaction>(
         layoutRes = R.layout.item_transaction,
         onBind = { v, t, _ ->
-            v.findViewById<TextView>(R.id.tx_description).text = t.description ?: t.type ?: "—"
-            v.findViewById<TextView>(R.id.tx_type).text = t.type ?: ""
-            val amount = if (t.amount >= 0) "+%.2f".format(t.amount) else "%.2f".format(t.amount)
-            v.findViewById<TextView>(R.id.tx_amount).text = Formatters.price(t.amount, t.currency)
+            v.findViewById<TextView>(R.id.tx_description).text =
+                t.description ?: t.type ?: "—"
+
+            v.findViewById<TextView>(R.id.tx_type).text =
+                t.type ?: ""
+
+            v.findViewById<TextView>(R.id.tx_amount).text =
+                Formatters.price(t.amount, t.currency)
         }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        stateView = StateView(binding.stateView.root) { vm.load() }
-        binding.toolbar.setNavigationOnClickListener { finish() }
-        binding.walletTransactions.layoutManager = LinearLayoutManager(this)
+
+        balanceVisible = savedInstanceState?.getBoolean(
+            KEY_BALANCE_VISIBLE,
+            true
+        ) ?: true
+
+        stateView = StateView(binding.stateView.root) {
+            vm.load()
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        binding.walletTransactions.layoutManager =
+            LinearLayoutManager(this)
+
         binding.walletTransactions.adapter = txAdapter
+
+        setupBalanceToggle()
+        setupWalletActions()
 
         vm.wallet.observe(this) { state ->
             stateView.bind(state)
+
             if (state is UiState.Success) {
-                val w = state.data
-                binding.walletBalance.text = Formatters.price(w.balance, w.currency)
-                binding.walletPending.text = "Pending: " + Formatters.price(w.pendingBalance, w.currency)
+                val wallet = state.data
+
+                currentBalanceText =
+                    Formatters.price(wallet.balance, wallet.currency)
+
+                updateBalanceVisibility()
+
+                binding.walletPending.text =
+                    "Pending: " +
+                        Formatters.price(
+                            wallet.pendingBalance,
+                            wallet.currency
+                        )
+
+                binding.walletAvailableLabel.text =
+                    Formatters.price(
+                        wallet.balance,
+                        wallet.currency
+                    )
+
+                binding.walletPendingLabel.text =
+                    Formatters.price(
+                        wallet.pendingBalance,
+                        wallet.currency
+                    )
             }
         }
-        vm.transactions.observe(this) { txAdapter.submit(it) }
+
+        vm.transactions.observe(this) {
+            txAdapter.submit(it)
+        }
 
         vm.load()
     }
-}
+
+    private fun setupBalanceToggle() {
+        binding.walletToggleBalance.setOnClickListener {
+            balanceVisible = !balanceVisible
+            updateBalanceVisibility()
+        }
+    }
+
+    private fun updateBalanceVisibility() {
+        if (balanceVisible) {
+            binding.walletBalance.text = currentBalanceText
+            binding.walletToggleBalance.setImageResource(
+                android.R.drawable.ic_menu_view
+            )
+            binding.walletToggleBalance.contentDescription =
+                "إخفاء الرصيد"
+        } else {
+            binding.walletBalance.text = "••••••••"
+            binding.walletToggleBalance.setImageResource(
+                android.R.drawable.ic_menu_view
+            )
+            binding.walletToggleBalance.contentDescription =
+                "إظهار الرصيد"
+        }
+    }
+
+    private fun setupWalletActions() {
+
+        binding.walletAddBalanceCard.setOnClickListener {
+            // سيتم ربطها بصفحة الدفع الفعلية في الخطوة القادمة.
+        }
+
+        binding.walletWithdrawCard.setOnClickListener {
+            // سيتم ربطها بصفحة السحب الفعلية في الخطوة القادمة.
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(
+            KEY_BALANCE_VISIBLE,
+            balanceVisible
+        )
+
+        super.onSaveInstanceState(outState)
+    }
+
+    companion object {
+        private const val KEY_BALANCE_VISIBLE =
+            "wallet_balance_visible"
+    }
+    }
