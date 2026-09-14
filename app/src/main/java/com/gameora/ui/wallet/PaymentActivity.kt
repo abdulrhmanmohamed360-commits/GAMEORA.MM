@@ -3,12 +3,9 @@ package com.gameora.ui.wallet
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.ArrayAdapter
 import android.widget.Toast
-import com.gameora.R
 import com.gameora.databinding.ActivityPaymentBinding
 import com.gameora.ui.common.BaseActivity
-import com.gameora.ui.common.Formatters
 import java.util.Locale
 
 class PaymentActivity :
@@ -20,10 +17,10 @@ class PaymentActivity :
         super.onCreate(savedInstanceState)
 
         setupToolbar()
-        setupCurrency()
         setupQuickAmounts()
         setupAmountInput()
         setupPaymentMethod()
+        updateCurrentBalance()
         updateSummary()
     }
 
@@ -33,34 +30,8 @@ class PaymentActivity :
         }
     }
 
-    private fun setupCurrency() {
-        val currencies = listOf(
-            "EGP",
-            "USD",
-            "SAR",
-            "AED",
-            "EUR"
-        )
-
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_dropdown_item_1line,
-            currencies
-        )
-
-        binding.paymentCurrency.setAdapter(adapter)
-        binding.paymentCurrency.setText(
-            selectedCurrency,
-            false
-        )
-
-        binding.paymentCurrency.setOnItemClickListener { _, _, position, _ ->
-            selectedCurrency = currencies[position]
-            updateSummary()
-        }
-    }
-
     private fun setupQuickAmounts() {
+
         binding.paymentQuick100.setOnClickListener {
             setAmount(100)
         }
@@ -75,6 +46,7 @@ class PaymentActivity :
     }
 
     private fun setupAmountInput() {
+
         binding.paymentAmount.addTextChangedListener(
             object : TextWatcher {
 
@@ -104,6 +76,7 @@ class PaymentActivity :
     }
 
     private fun setupPaymentMethod() {
+
         binding.paymentMethodCard.setOnClickListener {
             Toast.makeText(
                 this,
@@ -114,6 +87,7 @@ class PaymentActivity :
     }
 
     private fun setAmount(amount: Int) {
+
         binding.paymentAmount.setText(
             amount.toString()
         )
@@ -126,6 +100,7 @@ class PaymentActivity :
     }
 
     private fun getAmount(): Double {
+
         return binding.paymentAmount.text
             ?.toString()
             ?.replace(",", ".")
@@ -134,6 +109,7 @@ class PaymentActivity :
     }
 
     private fun formatAmount(amount: Double): String {
+
         return String.format(
             Locale.US,
             "%.2f %s",
@@ -142,14 +118,26 @@ class PaymentActivity :
         )
     }
 
+    private fun updateCurrentBalance() {
+
+        /*
+         * الرصيد الحقيقي سيتم جلبه من الـBackend.
+         * لا يوجد أي رصيد ثابت هنا.
+         *
+         * سيتم ربطه لاحقًا بالـWallet API.
+         */
+    }
+
     private fun updateSummary() {
+
         val amount = getAmount()
 
         /*
-         * الرسوم سيتم حسابها من الـBackend
-         * بعد ربط بوابة الدفع الحقيقية.
+         * الرسوم لا يتم حسابها أو تثبيتها
+         * من التطبيق.
          *
-         * حاليًا الرسوم = صفر.
+         * الـBackend سيحدد الرسوم النهائية
+         * عند إنشاء عملية الدفع الحقيقية.
          */
         val fee = 0.0
         val total = amount + fee
