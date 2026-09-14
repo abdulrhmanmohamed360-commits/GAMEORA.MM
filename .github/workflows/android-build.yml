@@ -1,6 +1,5 @@
 name: Android CI Build
 
-# يشتغل تلقائي مع كل push / pull request على main، وبردو تقدر تشغله يدوي من تبويب Actions
 on:
   push:
     branches: [ "main" ]
@@ -23,19 +22,19 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      # بيثبت Android SDK (platform-tools + platform 34 + build-tools) ويوافق على
-      # اللايسنسات أوتوماتيك، عشان الـ compileSdk 34 المكتوب في app/build.gradle
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      # الملف gradle-wrapper.jar ملف باينري كبير مش بيتحط عادي كـ Zip/نص، فبنولده هنا
-      # أوتوماتيك بنفس نسخة Gradle المكتوبة في gradle/wrapper/gradle-wrapper.properties (8.7)
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
 
-      - name: Regenerate Gradle wrapper (fixes missing gradle-wrapper.jar)
+      - name: Regenerate Gradle wrapper
         run: gradle wrapper --gradle-version 8.7 --distribution-type bin
 
       - name: Grant execute permission for gradlew
