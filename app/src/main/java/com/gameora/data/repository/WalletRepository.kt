@@ -2,6 +2,7 @@ package com.gameora.data.repository
 
 import com.gameora.data.mapper.toDomain
 import com.gameora.data.remote.api.ApiService
+import com.gameora.data.remote.dto.WalletDepositRequestDto
 import com.gameora.domain.model.Transaction
 import com.gameora.domain.model.Wallet
 import com.gameora.util.Paged
@@ -47,9 +48,9 @@ class WalletRepository(
     ): Result<com.gameora.data.remote.dto.WalletDepositResponseDto> =
         safeApi {
             api.createWalletDeposit(
-                mapOf(
-                    "amount" to amount,
-                    "currency" to "EGP"
+                WalletDepositRequestDto(
+                    amount = amount,
+                    currency = "EGP"
                 )
             )
         }
