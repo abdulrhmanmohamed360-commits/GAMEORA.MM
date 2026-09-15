@@ -8,7 +8,6 @@ import com.gameora.data.remote.dto.LoginRequestDto
 import com.gameora.data.remote.dto.MessageCreateDto
 import com.gameora.data.remote.dto.MessageDto
 import com.gameora.data.remote.dto.NotificationDto
-import com.gameora.data.remote.dto.OfferDto
 import com.gameora.data.remote.dto.OffersResponseDto
 import com.gameora.data.remote.dto.OrderCreateDto
 import com.gameora.data.remote.dto.OrderDto
@@ -22,6 +21,7 @@ import com.gameora.data.remote.dto.ReviewDto
 import com.gameora.data.remote.dto.SellerDto
 import com.gameora.data.remote.dto.TransactionDto
 import com.gameora.data.remote.dto.UserDto
+import com.gameora.data.remote.dto.WalletDepositRequestDto
 import com.gameora.data.remote.dto.WalletDepositResponseDto
 import com.gameora.data.remote.dto.WalletDto
 import retrofit2.http.Body
@@ -193,7 +193,7 @@ interface ApiService {
      */
     @POST("wallet/deposit/create")
     suspend fun createWalletDeposit(
-        @Body body: Map<String, Any>
+        @Body body: WalletDepositRequestDto
     ): WalletDepositResponseDto
 
     // ----------------------------------------------------------------- Offers
