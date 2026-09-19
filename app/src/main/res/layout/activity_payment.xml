@@ -27,10 +27,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/brand_primary"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="إضافة رصيد"
-                app:titleTextColor="@color/text_inverse" />
+                app:title="إضافة رصيد" />
 
             <!-- Page intro -->
 
@@ -128,7 +126,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/payment_amount_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.Gameora.TextInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="أدخل المبلغ"

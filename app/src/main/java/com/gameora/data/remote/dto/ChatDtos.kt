@@ -24,5 +24,7 @@ data class MessageDto(
 )
 
 data class MessageCreateDto(
-    @SerializedName("text") val text: String
+    @SerializedName("text") val text: String,
+    /** معرّف من التطبيق لمنع تكرار الرسالة عند إعادة المحاولة. */
+    @SerializedName("clientMessageId") val clientMessageId: String? = null
 )

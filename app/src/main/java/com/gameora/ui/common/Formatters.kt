@@ -5,6 +5,28 @@ import com.gameora.domain.model.OrderStatus
 
 object Formatters {
 
+    /**
+     * وقت رسالة/محادثة من ISO string: النهارده → الساعة فقط، غير كده → التاريخ.
+     * لو الـ string مش صالح بيرجّع نص فاضي بدل ما التطبيق يقع.
+     */
+    fun messageTime(iso: String?, timeOnly: Boolean = false): String {
+        if (iso.isNullOrBlank()) return ""
+        return try {
+            val zone = java.time.ZoneId.systemDefault()
+            val dt = java.time.Instant.parse(iso).atZone(zone)
+            val today = java.time.LocalDate.now(zone)
+            if (timeOnly || dt.toLocalDate() == today) {
+                java.time.format.DateTimeFormatter
+                    .ofLocalizedTime(java.time.format.FormatStyle.SHORT).format(dt)
+            } else {
+                java.time.format.DateTimeFormatter
+                    .ofLocalizedDate(java.time.format.FormatStyle.SHORT).format(dt)
+            }
+        } catch (_: Exception) {
+            ""
+        }
+    }
+
     fun price(value: Double?, currency: String?): String {
         val c = currency?.takeIf { it.isNotBlank() } ?: ""
         return when {

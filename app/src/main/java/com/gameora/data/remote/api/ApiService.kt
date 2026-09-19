@@ -241,6 +241,11 @@ interface ApiService {
         @Body body: MessageCreateDto
     ): MessageDto
 
+    @POST("conversations/{id}/read")
+    suspend fun markConversationRead(
+        @Path("id") id: String
+    ): Unit
+
     // --------------------------------------------------------- Notifications
 
     @GET("notifications")

@@ -94,6 +94,9 @@
     <string name="conversations_title">المحادثات</string>
     <string name="message_hint">اكتب رسالة…</string>
     <string name="action_send">إرسال</string>
+    <string name="chat_empty">ابدأ المحادثة بإرسال رسالة</string>
+    <string name="chat_realtime_unavailable">التحديث اللحظي غير متاح حاليًا — اضغط للمحاولة مرة أخرى</string>
+    <string name="chat_message_failed">فشل الإرسال — اضغط لإعادة المحاولة</string>
 
     <!-- Notifications -->
     <string name="notifications_title">الإشعارات</string>

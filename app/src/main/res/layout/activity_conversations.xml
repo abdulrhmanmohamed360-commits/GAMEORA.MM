@@ -13,10 +13,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/brand_primary"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="@string/conversations_title"
-            app:titleTextColor="@color/text_inverse" />
+            app:title="@string/conversations_title" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/conversations_recycler"

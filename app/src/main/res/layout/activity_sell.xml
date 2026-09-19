@@ -429,7 +429,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sell_previous"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/Widget.Gameora.Button.Outlined"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"

@@ -78,6 +78,10 @@ dependencies {
     // تعارض الـ Kotlin metadata بين إصدارات Firebase مختلفة.
     implementation 'com.google.firebase:firebase-messaging:23.4.1'
 
+    // Cloud Firestore (Realtime listeners للقراءة فقط - الكتابة كلها من خلال الـ Backend).
+    // نفس جيل firebase-auth:22.3.0 / firebase-messaging:23.4.1 (BoM 32.7.0).
+    implementation 'com.google.firebase:firebase-firestore:24.10.0'
+
     // Networking: Retrofit + OkHttp + Gson
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'

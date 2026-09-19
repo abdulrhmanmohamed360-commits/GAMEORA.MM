@@ -9,43 +9,91 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/brand_primary"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:titleTextColor="@color/text_inverse" />
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messages_recycler"
+    <!-- يظهر فقط لو الـ Realtime مش شغال (بنشتغل على REST مؤقتًا) -->
+    <TextView
+        android:id="@+id/realtime_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_error"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:padding="@dimen/spacing_s"
+        android:text="@string/chat_realtime_unavailable"
+        android:textColor="@color/text_primary"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="@dimen/spacing_s" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/spacing_s"
+            android:paddingBottom="@dimen/spacing_s" />
+
+        <ProgressBar
+            android:id="@+id/chat_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/chat_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/spacing_xl"
+            android:gravity="center"
+            android:text="@string/chat_empty"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/spacing_s"
-        android:gravity="center_vertical"
         android:background="@color/bg_surface"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_s">
 
         <EditText
             android:id="@+id/chat_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_chat_input"
             android:hint="@string/message_hint"
-            android:inputType="text"
-            android:maxLines="1"
-            android:background="@drawable/bg_bubble_in" />
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="4"
+            android:minHeight="48dp"
+            android:paddingStart="@dimen/spacing_l"
+            android:paddingEnd="@dimen/spacing_l"
+            android:paddingTop="@dimen/spacing_s"
+            android:paddingBottom="@dimen/spacing_s"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="15sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/chat_send"
-            style="@style/Widget.Gameora.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="@dimen/spacing_s"
-            android:text="@string/action_send" />
+            android:background="@drawable/bg_send_button"
+            android:contentDescription="@string/action_send"
+            android:enabled="false"
+            android:src="@drawable/ic_send" />
     </LinearLayout>
 </LinearLayout>

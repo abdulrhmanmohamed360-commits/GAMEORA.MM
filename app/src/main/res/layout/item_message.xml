@@ -1,18 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    FrameLayout ثابت كأب مباشر للـ bubble: ChatActivity بتغيّر layout_gravity بتاعة الـ bubble
+    (مش بتاعة الصف نفسه) عشان تفادي ClassCastException مع RecyclerView.LayoutParams.
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
     android:paddingStart="@dimen/spacing_l"
     android:paddingEnd="@dimen/spacing_l">
 
-    <TextView
-        android:id="@+id/message_text"
+    <LinearLayout
+        android:id="@+id/message_bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_m"
-        android:textSize="14sp"
-        android:textColor="@color/text_primary"
-        android:maxWidth="260dp" />
+        android:orientation="vertical"
+        android:paddingStart="@dimen/spacing_m"
+        android:paddingEnd="@dimen/spacing_m"
+        android:paddingTop="@dimen/spacing_s"
+        android:paddingBottom="6dp">
+
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/text_primary"
+            android:textIsSelectable="false"
+            android:maxWidth="280dp" />
+
+        <TextView
+            android:id="@+id/message_meta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="2dp"
+            android:textSize="11sp"
+            android:textColor="@color/text_hint" />
+    </LinearLayout>
 </FrameLayout>

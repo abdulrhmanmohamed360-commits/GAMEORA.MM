@@ -80,7 +80,8 @@
 
         <activity
             android:name=".ui.chat.ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.notifications.NotificationsActivity"

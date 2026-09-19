@@ -12,14 +12,14 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/brand_primary">
+            android:background="@color/bg_screen">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="العروض"
-                app:titleTextColor="@color/text_inverse" />
+                app:titleTextColor="@color/text_primary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -48,6 +48,6 @@
         android:background="@android:color/transparent"
         android:contentDescription="رجوع"
         android:src="@android:drawable/ic_media_previous"
-        android:tint="@color/text_inverse" />
+        android:tint="@color/text_primary" />
 
 </FrameLayout>
