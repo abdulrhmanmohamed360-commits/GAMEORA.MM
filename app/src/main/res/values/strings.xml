@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gameora</string>
+
+    <!-- Common / states -->
+    <string name="loading">جارٍ التحميل…</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="error_generic">تعذّر تحميل البيانات</string>
+    <string name="empty_generic">لا توجد بيانات لعرضها</string>
+    <string name="offline">لا يوجد اتصال بالإنترنت</string>
+    <string name="action_retry">إعادة المحاولة</string>
+    <string name="action_back">رجوع</string>
+    <string name="action_search">بحث</string>
+    <string name="action_close">إغلاق</string>
+    <string name="action_logout">تسجيل الخروج</string>
+
+    <!-- Auth -->
+    <string name="login">تسجيل الدخول</string>
+    <string name="register">إنشاء حساب</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="display_name">الاسم الظاهر</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="no_account">ليس لديك حساب؟ أنشئ حسابًا</string>
+    <string name="have_account">لديك حساب؟ سجّل الدخول</string>
+    <string name="login_failed">فشل تسجيل الدخول</string>
+    <string name="register_failed">فشل إنشاء الحساب</string>
+
+    <!-- Home / nav -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_search">بحث</string>
+    <string name="nav_sell">بيع</string>
+    <string name="nav_wallet">المحفظة</string>
+    <string name="nav_orders">طلباتي</string>
+    <string name="nav_profile">حسابي</string>
+    <string name="nav_chat">الرسائل</string>
+    <string name="nav_notifications">الإشعارات</string>
+    <string name="section_games">الألعاب</string>
+    <string name="section_categories">الأقسام</string>
+    <string name="search_hint">ابحث عن منتج أو لعبة…</string>
+
+    <!-- Products -->
+    <string name="filter_game">اللعبة</string>
+    <string name="filter_category">القسم</string>
+    <string name="filter_price">السعر</string>
+    <string name="filter_rank">الرتبة</string>
+    <string name="filter_level">المستوى</string>
+    <string name="filter_server">السيرفر</string>
+    <string name="filter_seller">البائع</string>
+    <string name="filter_status">الحالة</string>
+    <string name="apply_filters">تطبيق</string>
+    <string name="clear_filters">مسح</string>
+    <string name="load_more">تحميل المزيد…</string>
+    <string name="no_more_products">لا توجد منتجات أخرى</string>
+
+    <!-- Product detail -->
+    <string name="buy_now">اشترِ الآن</string>
+    <string name="contact_seller">تواصل مع البائع</string>
+    <string name="reviews">التقييمات</string>
+    <string name="seller_info">معلومات البائع</string>
+    <string name="verified_seller">بائع موثّق</string>
+    <string name="rank">الرتبة</string>
+    <string name="level">المستوى</string>
+    <string name="server_label">السيرفر</string>
+    <string name="description">الوصف</string>
+
+    <!-- Sell -->
+    <string name="sell_title">إضافة منتج</string>
+    <string name="edit_title">تعديل المنتج</string>
+    <string name="product_title">عنوان المنتج</string>
+    <string name="product_price">السعر</string>
+    <string name="product_currency">العملة</string>
+    <string name="product_game">اللعبة</string>
+    <string name="product_category">القسم</string>
+    <string name="product_images">روابط الصور (من السيرفر)</string>
+    <string name="action_save">حفظ</string>
+    <string name="action_delete">حذف</string>
+    <string name="sell_success">تم نشر المنتج</string>
+    <string name="delete_confirm">حذف هذا المنتج؟</string>
+
+    <!-- Wallet -->
+    <string name="wallet_balance">الرصيد الحالي</string>
+    <string name="wallet_transactions">المعاملات</string>
+
+    <!-- Orders -->
+    <string name="orders_title">الطلبات</string>
+    <string name="order_status">الحالة</string>
+    <string name="order_total">الإجمالي</string>
+    <string name="action_cancel_order">إلغاء الطلب</string>
+    <string name="cancel_confirm">إلغاء هذا الطلب؟</string>
+
+    <!-- Chat -->
+    <string name="conversations_title">المحادثات</string>
+    <string name="message_hint">اكتب رسالة…</string>
+    <string name="action_send">إرسال</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">الإشعارات</string>
+
+    <!-- Profile -->
+    <string name="profile_title">حسابي</string>
+    <string name="edit_profile">تعديل الحساب</string>
+    <string name="rating">التقييم</string>
+    <string name="reviews_count">عدد التقييمات</string>
+    <string name="not_logged_in">يرجى تسجيل الدخول</string>
+
+    <string name="recent">أحدث المنتجات</string>
+    <string name="products_title">المنتجات</string>
+    <string name="price_min">أقل سعر</string>
+    <string name="price_max">أعلى سعر</string>
+    <string name="sort_by">ترتيب</string>
+    <string name="apply">تطبيق</string>
+    <string name="clear">مسح</string>
+    <string name="status_all">كل الحالات</string>
+    <string name="my_products">منتجاتي</string>
+    <string name="order_items">المنتجات</string>
+    <string name="contact_via_chat">تواصل عبر الرسائل</string>
+    <string name="images_hint">روابط الصور مفصولة بفاصلة</string>
+    <string name="currency_hint">العملة (مثال: USD)</string>
+    <string name="action_filters">الفلاتر</string>
+    <string name="login_required">يرجى تسجيل الدخول أولاً</string>
+    <string name="order_cancelled">تم إلغاء الطلب</string>
+    <string name="order_created">تم إنشاء الطلب</string>
+    <string name="product_deleted">تم حذف المنتج</string>
+</resources>

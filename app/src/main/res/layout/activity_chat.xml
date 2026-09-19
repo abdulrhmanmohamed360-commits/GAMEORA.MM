@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/brand_primary"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:titleTextColor="@color/text_inverse" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="@dimen/spacing_s" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_s"
+        android:gravity="center_vertical"
+        android:background="@color/bg_surface"
+        android:elevation="4dp">
+
+        <EditText
+            android:id="@+id/chat_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/message_hint"
+            android:inputType="text"
+            android:maxLines="1"
+            android:background="@drawable/bg_bubble_in" />
+
+        <Button
+            android:id="@+id/chat_send"
+            style="@style/Widget.Gameora.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_s"
+            android:text="@string/action_send" />
+    </LinearLayout>
+</LinearLayout>
