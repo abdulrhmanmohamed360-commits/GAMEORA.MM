@@ -1,90 +1,73 @@
-# Gameora Backend (Node.js + Express + Firestore) — يشتغل مجانًا من غير أي بطاقة
+# Gameora — Server-Driven Production Architecture
 
-سيرفر حقيقي لتطبيق Gameora، بيطبّق بالظبط نفس الـ endpoints الموجودة في
-`ApiService.kt` بتاع الأندرويد. الداتا محفوظة في Firestore (مجاني بالكامل)،
-والسيرفر نفسه بيشتغل على **Vercel** — استضافة مجانية بتقبل حسابات من غير
-أي بطاقة بنكية.
+A fully server-driven Android (Kotlin) marketplace app for gaming accounts/items.
+**The app contains zero mock/demo/fake/hard-coded data.** Every piece of content the
+user sees — games, categories, products, images, sellers, reviews, orders, wallet
+balance, chat, notifications — is fetched from the backend API and rendered as-is.
 
-**مش محتاج تلمس كود الأندرويد خالص** — بس هتغيّر سطر واحد فيه (API_BASE_URL) في الآخر.
+## Architecture
 
----
-
-## الخطوات (كلها ممكن تتعمل من الموبايل)
-
-### 1) فعّل Firestore بس (لو لسه معملتوش)
-1. روح [console.firebase.google.com](https://console.firebase.google.com) → افتح مشروعك (أو اعمل واحد جديد لو مفيش)
-2. من القائمة الجانبية: **Build → Firestore Database** → **Create database** → **Production mode** → اختار أي موقع سيرفر قريب → **Enable**
-3. الخطوة دي **مش محتاجة خطة Blaze ولا بطاقة بنكية خالص** — دي غير Cloud Functions تمامًا.
-
-### 2) الصق قواعد الأمان مباشرة (من غير أي CLI)
-1. في نفس صفحة Firestore، افتح تبويب **Rules** فوق
-2. امسح اللي موجود، والصق محتوى ملف `firestore.rules` الموجود في المشروع ده بالكامل
-3. دوس **Publish**
-
-### 3) اعمل Service Account Key
-1. من Firebase Console: ⚙️ Project settings → تبويب **Service accounts**
-2. **Generate new private key** → هينزلّك ملف `.json`
-3. افتحه وانسخ **كل محتواه** (من `{` لحد `}`)
-
-### 4) اعمل حساب على Vercel (من غير بطاقة خالص)
-1. روح [vercel.com](https://vercel.com/signup) وسجّل بحساب GitHub بتاعك مباشرة (مفيش أي طلب بطاقة في التسجيل)
-2. من الداشبورد: **Add New...** → **Project**
-3. اختار ريبو الـ backend ده من القائمة → **Import**
-4. في شاشة الإعدادات قبل ما تعمل Deploy:
-   - **Root Directory:** دوس Edit واختار `functions`
-   - **Framework Preset:** سيبه **Other**
-   - **Build Command:** امسحه خالي (Override → سيب الخانة فاضية)
-   - **Output Directory:** سيبه زي ما هو (Vercel هيتكفل بيها)
-5. افتح **Environment Variables** وضيف التلاتة دول:
-
-   | الاسم | القيمة |
-   |---|---|
-   | `JWT_SECRET` | أي نص عشوائي طويل (اكتب أي حاجة 30-40 حرف) |
-   | `ADMIN_SEED_KEY` | كلمة سر بسيطة، هتستخدمها بعدين |
-   | `GOOGLE_SERVICE_ACCOUNT_JSON` | الصق محتوى ملف الـ json كامل من خطوة 3 |
-
-6. دوس **Deploy**
-
-Vercel هيبني وينشر لوحده، وهيديك رابط في الآخر شكله زي:
 ```
-https://gameora-backend-xxxx.vercel.app
+Android App  →  API (Retrofit/OkHttp)  →  Backend  →  External Database
+                                      →  External Storage (image URLs)
 ```
 
-### 5) ضيف ألعاب وفئات تجريبية (مرة واحدة)
-افتح من متصفح الموبايل:
+Flow on every screen: `ApiService → Repository → ViewModel → UI`, with the UI never
+holding real/hard-coded content.
+
+### Layers
+- **config/ApiConfig** — the single place the backend `BASE_URL` lives (via `BuildConfig`).
+- **data/remote/api** — Retrofit `ApiService` (all endpoints) + `ApiClient` (OkHttp, interceptors, timeouts).
+- **data/remote/dto** — server-facing DTOs (`@SerializedName`).
+- **data/mapper** — DTO → domain model mappers (incl. paginated envelope → `Paged<T>`).
+- **data/repository** — one repository per feature, wrapping `safeApi` and returning `Result<T>`.
+- **data/local** — `TokenStore` (EncryptedSharedPreferences) + `SessionManager` (in-memory).
+- **domain/model** — clean UI types (no serialization annotations).
+- **ui/** — one MVVM screen per feature; each renders Loading / Success / Empty / Error.
+- **di/AppContainer** — manual DI created once in `GameoraApp`.
+
+## No mock data (audit)
+- No `listOf(...)` catalogues of games/categories/products/users.
+- No emoji or bundled images as game/product art — every image is a server URL loaded with **Coil**.
+- No fake wallet balance, fake orders, fake ratings, fake chat, fake notifications.
+- On failure the UI shows an Error + Retry state — never fallback mock content.
+
+## Authentication
+Real backend auth: `POST /auth/login`, `POST /auth/register`, `POST /auth/logout`,
+`GET /users/me`. The bearer token is stored encrypted (Android Keystore via
+`security-crypto`); passwords are never stored in plain text.
+
+## Pagination, filters, search
+Products/orders/wallet/chat/notifications use server pagination (`page`+`limit`).
+Product filters (game, category, price min/max, rank, level, server, status) and
+search are all sent to the server (`GET /products?...`).
+
+## Buying & orders
+`POST /orders` sends only `productId` — the **server** validates availability, re-prices,
+checks the buyer/balance, and returns the created order. The app never trusts a
+client-side price. Order status comes from the server.
+
+## Configuration (IMPORTANT — before building)
+Set the real backend URL in **one place only**: `app/build.gradle`
 ```
-https://gameora-backend-xxxx.vercel.app/seed.html
+buildConfigField "String", "API_BASE_URL", "\"https://api.gameora.example.com/v1/\""
+buildConfigField "String", "IMAGE_BASE_URL", "\"https://api.gameora.example.com/storage/\""
 ```
-حط قيمة `ADMIN_SEED_KEY` اللي حطيتها فوق، ودوس الزرار.
+No secrets (DB passwords, private keys, admin tokens) belong in source — use
+environment variables / CI secrets.
 
-### 6) وصّل الأندرويد بالسيرفر
-في ريبو الأندرويد، افتح `app/build.gradle` وابدّل السطرين دول:
-```gradle
-buildConfigField "String", "API_BASE_URL", "\"https://gameora-backend-xxxx.vercel.app/\""
-buildConfigField "String", "IMAGE_BASE_URL", "\"https://gameora-backend-xxxx.vercel.app/\""
+## Build
+Requires a machine with JDK 17 + Android SDK (compileSdk 34):
 ```
-(خلي بالك من الـ `/` في الآخر — لازم يكون موجود)
+./gradlew clean assembleDebug
+```
+```
+This sandbox does not ship a JDK/Android SDK, so the Gradle build must be run in a
+proper Android development environment (Android Studio or a CI image with the SDK).
+The wrapper (gradlew + gradle-wrapper.jar) is included and pinned to Gradle 8.7 stable.
+```
 
-اعمل commit وpush — الـ workflow بتاع الأندرويد هيبني APK جديد أوتوماتيك.
-
----
-
-## بديل: لو Vercel برضو طلب بطاقة عندك (بيختلف أحيانًا حسب الدولة)
-
-نفس الكود شغال على **Railway.app** برضو من غير بطاقة في البداية (بياخد $5 رصيد مجاني أول شهر). نفس الخطوات بالظبط، الفرق بس:
-- **Root Directory:** `functions`
-- **Build Command:** `npm install && npm run build`
-- **Start Command:** `npm start`
-- نفس الـ 3 environment variables
-
-ملف `render.yaml` الموجود جوه المشروع ده لو حبيت تجرب Render برضو (بعض الحسابات بتقدر تعمل free web service من غير بطاقة، بيختلف حسب الدولة والحساب).
-
----
-
-## ملاحظات مهمة
-
-- **من كل push على GitHub، Vercel بينشر تلقائي لوحده** — بالظبط زي GitHub Actions، بس مش محتاج تعمل حاجة إضافية.
-- **مفيش endpoint لإضافة ألعاب/فئات من التطبيق نفسه** — بتتضاف بس عن طريق صفحة `seed.html` أو مباشرة من Firestore Console.
-- **زرار "تواصل مع البائع"** في شاشة تفاصيل المنتج حاليًا بيعمل بس رسالة toast — مفيش كود في الأندرويد بيفتح شات فعلي معاه (من المشروع الأصلي، مش حاجة إحنا كسرناها).
-- منطق الطلبات (orders): السيرفر بيتأكد من توفر المنتج، بيحسب السعر من قاعدة البيانات (مش من اللي بيبعته التطبيق)، وبيتحقق من رصيد المشتري قبل ما ينشئ أي أوردر.
-- خطط Vercel/Railway المجانية فيها حدود استخدام شهرية (bandwidth/execution time) كافية جدًا لمشروع شخصي صغير، بس لو التطبيق كبر قوي يوم من الأيام هتحتاج تترقى.
+## Backend contract
+See `ApiService.kt` for the full endpoint list. If the backend isn't ready yet, the
+interfaces/DTOs/repositories/configuration are already in place to wire to it —
+no fake API was invented.
