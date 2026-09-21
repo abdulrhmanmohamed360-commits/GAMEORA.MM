@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Android 12+: the system splash uses the same black background and the app mark. -->
+    <style name="Theme.Gameora.Splash" parent="Theme.Gameora">
+        <item name="android:windowBackground">@drawable/bg_splash_window</item>
+        <item name="android:windowSplashScreenBackground">@color/bg_screen</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+    </style>
+
+</resources>

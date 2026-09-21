@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Product status filter options (filter criteria, not catalogue data). -->
+    <string-array name="product_status_options">
+        <item>@string/status_all</item>
+        <item>ACTIVE</item>
+        <item>SOLD</item>
+        <item>PENDING</item>
+        <item>HIDDEN</item>
+    </string-array>
+
+    <!-- Currency options offered in the sell form (configurable, not content). -->
+    <string-array name="currency_options">
+        <item>USD</item>
+        <item>SAR</item>
+        <item>AED</item>
+        <item>EGP</item>
+        <item>EUR</item>
+    </string-array>
+</resources>

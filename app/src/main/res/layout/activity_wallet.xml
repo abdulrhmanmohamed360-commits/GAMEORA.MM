@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/spacing_l">
+
+            <!-- Toolbar -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:title="@string/nav_wallet" />
+
+            <!-- Wallet Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/spacing_l"
+                android:paddingTop="@dimen/spacing_l"
+                android:paddingEnd="@dimen/spacing_l">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="المحفظة"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="تحكم في رصيدك ومعاملاتك بسهولة"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary" />
+
+            </LinearLayout>
+
+            <!-- Balance Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_l"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:layout_marginEnd="@dimen/spacing_l"
+                app:cardBackgroundColor="@color/brand_primary"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <!-- Balance title -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="الرصيد المتاح"
+                            android:textColor="@color/text_inverse"
+                            android:textSize="14sp" />
+
+                        <ImageButton
+                            android:id="@+id/wallet_toggle_balance"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="إخفاء أو إظهار الرصيد"
+                            android:padding="10dp"
+                            android:src="@android:drawable/ic_menu_view"
+                            android:tint="@color/text_inverse" />
+
+                    </LinearLayout>
+
+                    <!-- Balance -->
+                    <TextView
+                        android:id="@+id/wallet_balance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="0.00 EGP"
+                        android:textColor="@color/text_inverse"
+                        android:textSize="32sp"
+                        android:textStyle="bold" />
+
+                    <!-- Pending -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="الرصيد المعلّق"
+                            android:textColor="@color/text_inverse"
+                            android:textSize="13sp"
+                            android:alpha="0.75" />
+
+                        <TextView
+                            android:id="@+id/wallet_pending"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0.00 EGP"
+                            android:textColor="@color/text_inverse"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Wallet Actions -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_l"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:layout_marginEnd="@dimen/spacing_l"
+                android:orientation="horizontal">
+
+                <!-- Add Balance -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/wallet_add_balance_card"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:text="+"
+                            android:textSize="30sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="إضافة رصيد"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <Space
+                    android:layout_width="@dimen/spacing_s"
+                    android:layout_height="1dp" />
+
+                <!-- Withdraw -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/wallet_withdraw_card"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:text="↗"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="سحب رصيد"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Wallet Statistics -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_l"
+                android:layout_marginTop="24dp"
+                android:text="ملخص المحفظة"
+                android:textAppearance="@style/TextAppearance.Gameora.Title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_l"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/spacing_l"
+                android:orientation="horizontal">
+
+                <!-- Available -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="متاح"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary" />
+
+                        <TextView
+                            android:id="@+id/wallet_available_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="متاح الآن"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <Space
+                    android:layout_width="@dimen/spacing_s"
+                    android:layout_height="1dp" />
+
+                <!-- Pending -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="قيد التنفيذ"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary" />
+
+                        <TextView
+                            android:id="@+id/wallet_pending_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="قيد التنفيذ"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Transactions Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingStart="@dimen/spacing_l"
+                android:paddingEnd="@dimen/spacing_l"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/wallet_transactions"
+                    android:textAppearance="@style/TextAppearance.Gameora.Title" />
+
+                <TextView
+                    android:id="@+id/wallet_transactions_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="آخر العمليات"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary" />
+
+            </LinearLayout>
+
+            <!-- Transactions -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wallet_transactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:paddingStart="@dimen/spacing_s"
+                android:paddingEnd="@dimen/spacing_s"
+                android:paddingBottom="@dimen/spacing_l"
+                android:overScrollMode="never" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading / Error State -->
+    <include
+        android:id="@+id/state_view"
+        layout="@layout/layout_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

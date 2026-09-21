@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Same "G" mark as the launcher icon, cropped so it fills the splash badge. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="76dp"
+    android:height="76dp"
+    android:viewportWidth="60"
+    android:viewportHeight="60">
+    <group
+        android:translateX="-24"
+        android:translateY="-24">
+        <path
+            android:fillColor="@color/brand_primary"
+            android:pathData="M54,30 C40,30 30,40 30,54 C30,68 40,78 54,78 C64,78 72,72 75,63 L66,63 C64,67 59,69 54,69 C46,69 40,62 40,54 C40,46 46,39 54,39 C59,39 63,42 65,46 L73,46 C70,36 63,30 54,30 Z" />
+        <path
+            android:fillColor="@color/brand_primary"
+            android:pathData="M58,52 L72,52 L72,60 L58,60 Z" />
+    </group>
+</vector>

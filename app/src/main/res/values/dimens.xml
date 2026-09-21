@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_m">12dp</dimen>
+    <dimen name="spacing_l">16dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="card_radius">14dp</dimen>
+    <dimen name="thumb_size">88dp</dimen>
+    <dimen name="game_icon_size">72dp</dimen>
+</resources>
