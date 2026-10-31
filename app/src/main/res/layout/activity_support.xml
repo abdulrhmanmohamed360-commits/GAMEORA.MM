@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/support_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tickets_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/spacing_l"
+            android:paddingTop="@dimen/spacing_s"
+            android:paddingEnd="@dimen/spacing_l"
+            android:paddingBottom="96dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/support_new_ticket_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/support_new_ticket"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/brand_primary"
+        app:elevation="0dp"
+        app:pressedTranslationZ="0dp"
+        app:rippleColor="@color/brand_primary_dark"
+        app:tint="@color/text_inverse" />
+
+    <include
+        android:id="@+id/state_view"
+        layout="@layout/layout_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

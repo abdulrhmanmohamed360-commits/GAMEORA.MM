@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?><FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/bg_screen">
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/bg_screen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/bg_surface"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIconTint="@color/text_primary"
+            app:title="@string/orders_title"
+            app:titleTextColor="@color/text_primary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_l">
+
+            <TextView
+                android:id="@+id/order_detail_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/order_detail_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:padding="8dp"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/order_detail_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:textAppearance="@style/TextAppearance.Gameora.Price"
+                android:textColor="@color/brand_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/order_detail_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:text="@string/order_items"
+                android:textAppearance="@style/TextAppearance.Gameora.Title"
+                android:textColor="@color/text_primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/order_detail_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
+                android:nestedScrollingEnabled="false" />
+
+            <LinearLayout
+                android:id="@+id/order_seller_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="إجراءات البائع"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/order_detail_approve"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:backgroundTint="@color/brand_primary"
+                    android:text="قبول الطلب"
+                    android:textColor="@color/text_inverse" />
+
+                <Button
+                    android:id="@+id/order_detail_reject"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:backgroundTint="@color/error_color"
+                    android:text="رفض الطلب"
+                    android:textColor="@color/text_primary" />
+
+                <Button
+                    android:id="@+id/order_detail_deliver"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:backgroundTint="@color/brand_secondary"
+                    android:text="تسليم الحساب"
+                    android:textColor="@color/text_inverse"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/order_detail_chat"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:backgroundTint="@color/brand_primary"
+                    android:text="فتح المحادثة"
+                    android:textColor="@color/text_inverse"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/order_buyer_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/order_detail_confirm"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/success_color"
+                    android:text="تأكيد استلام الحساب"
+                    android:textColor="@color/text_inverse"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/order_detail_dispute"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:backgroundTint="@color/warning_color"
+                    android:text="فتح نزاع"
+                    android:textColor="@color/text_inverse"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/order_buyer_chat"
+                    style="@style/Widget.Gameora.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_s"
+                    android:backgroundTint="@color/brand_primary"
+                    android:text="فتح المحادثة"
+                    android:textColor="@color/text_inverse"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/order_detail_cancel"
+                style="@style/Widget.Gameora.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_l"
+                android:backgroundTint="@color/error_color"
+                android:text="@string/action_cancel_order" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+<include
+    android:id="@+id/state_view"
+    layout="@layout/layout_state"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+</FrameLayout>

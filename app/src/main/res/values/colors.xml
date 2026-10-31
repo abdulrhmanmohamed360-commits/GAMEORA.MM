@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Gameora — Black + Dark Green + Emerald
+
+        Three layers, always in this order:
+          1. Black          → the screen itself
+          2. Dark green     → every surface that sits on the screen (cards, sheets, inputs)
+          3. Emerald        → only what the user can act on or should notice
+                              (primary button, active tab, price, focus, unread)
+    -->
+
+    <!-- Emerald (actions, active states) -->
+    <color name="brand_primary">#10B981</color>
+    <color name="brand_primary_dark">#047857</color>
+    <color name="brand_secondary">#34D399</color>
+    <color name="brand_accent">#6EE7B7</color>
+
+    <!-- Dark green (depth, hero areas) -->
+    <color name="brand_deep">#064E3B</color>
+    <color name="brand_deepest">#022C22</color>
+
+    <!-- Backgrounds -->
+    <color name="bg_screen">#000000</color>
+    <color name="bg_surface">#0A1A13</color>
+    <color name="bg_surface_raised">#10281D</color>
+    <color name="bg_error">#2A1216</color>
+    <color name="bg_empty">#10281D</color>
+
+    <!-- Compatibility colors -->
+    <color name="background">#000000</color>
+    <color name="divider">#1B3B2D</color>
+
+    <!-- Strokes -->
+    <color name="divider_color">#1B3B2D</color>
+    <color name="stroke_input">#347A5C</color>
+    <color name="ripple_emerald">#2910B981</color>
+    <color name="brand_primary_soft">#2610B981</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F2FAF6</color>
+    <color name="text_secondary">#B3C7BD</color>
+    <color name="text_hint">#7C9487</color>
+    <color name="text_inverse">#000000</color>
+
+    <!-- Status -->
+    <color name="error_color">#EF4444</color>
+    <color name="success_color">#22C55E</color>
+    <color name="warning_color">#F59E0B</color>
+
+    <!-- Launcher -->
+    <color name="ic_launcher_background">#022C22</color>
+
+</resources>

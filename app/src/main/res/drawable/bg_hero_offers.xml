@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home hero fill: dark green fading into black. The Emerald hairline comes from the card that holds it. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="225"
+        android:startColor="@color/brand_deep"
+        android:endColor="@color/bg_screen"
+        android:type="linear" />
+</shape>
